@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art of Living Happiness Center - Indiranagar</title>
+  <meta name="description" content="Art of Living Happiness Center Indiranagar - Yoga, Meditation, and Happiness Programs. Join our courses: Sudarshan Kriya Yoga, Happiness Program, Hatha Yoga, and more.">
+  <meta name="theme-color" content="#FAF7F2">
+  <meta property="og:title" content="Art of Living Happiness Center - Indiranagar">
+  <meta property="og:description" content="Yoga, meditation & happiness programs in Indiranagar, Bengaluru. Happiness Program, Sahaj Samadhi Meditation, Sri Sri Yoga and more.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_IN">
+  <!-- TODO before launch: set the real domain + a real photo for link previews
+  <link rel="canonical" href="https://example.org/">
+  <meta property="og:url" content="https://example.org/">
+  <meta property="og:image" content="https://example.org/og.jpg">
+  -->
+  <!-- Just the sun and its rays, cropped square out of the official logo by
+       clipping rather than redrawing, so it stays legible at 16px. -->
+  <link rel="icon" href="img/favicon.svg">
+  <!-- Fonts are self-hosted from /fonts (see the @font-face block in
+       style.css). All three are used in the first viewport, so all three are
+       preloaded; crossorigin is required on font preloads even same-origin.
+       Lora, not Playfair Display: a low-contrast, warm serif. Playfair is a
+       high-contrast Didone — elegant, but it signals luxury magazine. -->
+  <link rel="preload" href="fonts/lora-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/lora-var-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a href="#home" class="skip-link">Skip to main content</a>
+
+  <!-- Icon sprite. Simple geometry — arcs, circles, petals — drawn once and
+       referenced with <use>. Replaces the emoji that used to sit in the cards. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-lotus" viewBox="0 0 24 24">
+        <path d="M12 20.5C8 16.5 8 10.5 12 5.5c4 5 4 11 0 15"/>
+        <path d="M12 20.5C6 18.5 3 13 4 7.5c5 1 8 6.5 8 13"/>
+        <path d="M12 20.5C18 18.5 21 13 20 7.5c-5 1-8 6.5-8 13"/>
+      </symbol>
+      <!-- Ensō: a single circle left open. Concentric rings read as a
+           bullseye, and "hit the target" is the wrong idea for meditation. -->
+      <symbol id="i-stillness" viewBox="0 0 24 24">
+        <path d="M15.16 3.31A9.25 9.25 0 1 1 8.84 3.31"/>
+      </symbol>
+      <symbol id="i-seated" viewBox="0 0 24 24">
+        <circle cx="12" cy="5.25" r="2.5"/>
+        <path d="M4 19c1.8-5.5 4.6-8.5 8-8.5s6.2 3 8 8.5"/>
+        <path d="M3 19.75h18"/>
+      </symbol>
+      <symbol id="i-wave" viewBox="0 0 24 24">
+        <path d="M3 7.5c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/>
+        <path d="M3 12c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/>
+        <path d="M3 16.5c2-2.5 4-2.5 6 0s4 2.5 6 0 4-2.5 6 0"/>
+      </symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24">
+        <path d="M12 2.5c.7 6 3.8 9.1 9.5 9.5-5.7.4-8.8 3.5-9.5 9.5-.7-6-3.8-9.1-9.5-9.5 5.7-.4 8.8-3.5 9.5-9.5Z"/>
+      </symbol>
+      <symbol id="i-sunrise" viewBox="0 0 24 24">
+        <path d="M3 18.5h18"/>
+        <path d="M6.75 18.5a5.25 5.25 0 0 1 10.5 0"/>
+        <path d="M12 4v2.25M5.4 7.4 7 9M18.6 7.4 17 9"/>
+      </symbol>
+      <symbol id="i-book" viewBox="0 0 24 24">
+        <path d="M12 6.75C9.6 4.9 6.4 4.6 3.5 5.5v13c2.9-.9 6.1-.6 8.5 1.25 2.4-1.85 5.6-2.15 8.5-1.25v-13c-2.9-.9-6.1-.6-8.5 1.25Z"/>
+        <path d="M12 6.75v13"/>
+      </symbol>
+      <symbol id="i-breath" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="1.75"/>
+        <path d="M16.5 7.75a6 6 0 0 1 0 8.5M7.5 16.25a6 6 0 0 1 0-8.5"/>
+        <path d="M19.75 4.5a10.5 10.5 0 0 1 0 15M4.25 19.5a10.5 10.5 0 0 1 0-15"/>
+      </symbol>
+      <symbol id="i-clarity" viewBox="0 0 24 24">
+        <path d="M12 3.25c0 0 6.75 7 6.75 11a6.75 6.75 0 0 1-13.5 0c0-4 6.75-11 6.75-11Z"/>
+      </symbol>
+      <symbol id="i-bloom" viewBox="0 0 24 24">
+        <circle cx="12" cy="7.6" r="3.3"/>
+        <circle cx="16.4" cy="12" r="3.3"/>
+        <circle cx="12" cy="16.4" r="3.3"/>
+        <circle cx="7.6" cy="12" r="3.3"/>
+      </symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.25"/>
+        <path d="M2.75 12h18.5"/>
+        <path d="M12 2.75c3.4 3.2 3.4 15.3 0 18.5-3.4-3.2-3.4-15.3 0-18.5Z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <!-- Official logo: img/aol-logo.svg, taken from artofliving.org
+           (app/themes/artofliving/assets/images/logo.svg). Rising sun in the
+           brand gradient (#fff200 → #f37021), two swans, "THE ART OF LIVING"
+           wordmark, ® mark. Do not recolour, redraw, or stretch it — height
+           is set in CSS and the width follows the 2.55:1 ratio. -->
+      <a href="#home" class="nav-logo">
+        <img class="logo-mark" src="img/aol-logo.svg" alt="The Art of Living" width="273" height="107">
+        <span class="logo-text">Indiranagar</span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#courses" class="nav-link">Courses</a></li>
+        <li><a href="#upcoming" class="nav-link">Upcoming</a></li>
+        <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#contact" class="btn btn-primary btn-sm nav-cta">Enrol Now</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="container hero-content">
+      <p class="hero-subtitle">Art of Living Happiness Center · Indiranagar</p>
+      <h1 class="hero-title">Breathe. Meditate.<br><span class="highlight">Be happy.</span></h1>
+      <p class="hero-text">Discover inner peace and lasting happiness through the timeless wisdom of yoga and meditation, guided by the Art of Living foundation.</p>
+      <div class="hero-buttons">
+        <a href="#courses" class="btn btn-primary btn-lg">Explore Courses</a>
+        <a href="#contact" class="btn btn-outline btn-lg">Visit the Center</a>
+      </div>
+      <!-- Facts about THIS center only. The previous row — 45+ years, 180+
+           countries — described the global foundation; a visitor deciding
+           whether to walk in learned nothing about Indiranagar from it.
+           These three are all verifiable from the content further down.
+
+           If you have real center numbers, they are stronger than any of
+           these and belong here instead: years at this address, students
+           taught here, certified teachers on staff. Just write "500+"
+           straight into .stat-number — there's no separate suffix element. -->
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-tag">About Us</p>
+          <h2 class="section-title">A sanctuary of peace in the heart of Indiranagar</h2>
+          <p>The Art of Living Happiness Center in Indiranagar is a beacon of holistic well-being, offering time-tested techniques that bring harmony to body, mind, and spirit. Founded on the principles of <strong>Sri Sri Ravi Shankar</strong>, our center has been transforming lives through the power of breath, meditation, and yoga.</p>
+          <p>Whether you're a beginner taking your first step toward wellness or a seasoned practitioner deepening your journey, our experienced instructors guide you with warmth and expertise every step of the way.</p>
+          <!-- Concrete facts beat adjectives here. "Supportive community" and
+               "serene environment" are claims every centre makes; batch sizes,
+               languages taught, parking and transport are the things someone
+               actually weighs before walking in. Replace these with your real
+               details — I only know the last two from the address. -->
+        </div>
+        <!-- Shown at its native 3:2 — no crop at all. The slot used to be 4:5
+             portrait, which would have discarded 47% of the frame's width and
+             cut the room in half. -->
+        <figure class="about-media">
+          <img src="img/hero-class.webp" width="1280" height="853"
+               alt="A group seated on yoga mats in the centre's studio, practising a guided breathing exercise in afternoon light">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses -->
+  <section class="section courses" id="courses">
+    <div class="container">
+      <div class="section-header align-left">
+        <p class="section-tag">Our Courses</p>
+        <h2 class="section-title">Programs for every stage of your journey</h2>
+      </div>
+      <div class="courses-grid" id="coursesGrid">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Programs -->
+  <section class="section upcoming" id="upcoming">
+    <div class="container">
+      <div class="section-header align-left">
+        <p class="section-tag">Mark Your Calendar</p>
+        <h2 class="section-title">Upcoming programs</h2>
+        <p class="section-subtitle">Our next batches. Write to us to hold a place.</p>
+      </div>
+      <div class="upcoming-list" id="upcomingList">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section why-us">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Why Art of Living</p>
+        <h2 class="section-title">The science of happiness</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon"><svg class="icon"><use href="#i-breath"/></svg></div>
+          <h3>Sudarshan Kriya</h3>
+          <p>A unique rhythmic breathing technique that eliminates stress, fatigue, and negative emotions — scientifically proven to enhance well-being.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><svg class="icon"><use href="#i-clarity"/></svg></div>
+          <h3>Mind Clarity</h3>
+          <p>Our programs sharpen focus, boost creativity, and bring mental clarity, helping you perform at your best in every area of life.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><svg class="icon"><use href="#i-bloom"/></svg></div>
+          <h3>Emotional Wellness</h3>
+          <p>Learn to manage anxiety, anger, and depression naturally. Cultivate lasting joy and emotional resilience.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon"><svg class="icon"><use href="#i-globe"/></svg></div>
+          <h3>Global Community</h3>
+          <p>Join millions of practitioners worldwide. Connect with a vibrant local community right here in Indiranagar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Testimonials</p>
+        <h2 class="section-title">What our students say</h2>
+      </div>
+      <div class="testimonial-slider" id="testimonialSlider">
+        <!-- Injected by JS -->
+      </div>
+      <div class="slider-dots" id="sliderDots"></div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <div class="container cta-content">
+      <h2>Begin your journey today</h2>
+      <p>Take the first step toward a stress-free, joyful life. Join us at Indiranagar.</p>
+      <a href="#contact" class="btn btn-white btn-lg">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="section-header align-left">
+        <p class="section-tag">Get In Touch</p>
+        <h2 class="section-title">Visit us or enrol today</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <!-- This column held six stacked blocks. Gone: the centre's name
+               (already in the masthead AND the section title above), the
+               address as loose prose, and a "Get Directions" button that
+               pointed at the same Maps pin as the map card two blocks below
+               it — three affordances for one link.
+               What's left is two details and one map. -->
+          <dl class="contact-details">
+            <div>
+              <dt>Phone</dt>
+              <dd><a href="tel:+919986347648">+91 99863 47648</a></dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd><a href="mailto:programs.artofliving@gmail.com">programs.artofliving@gmail.com</a></dd>
+            </div>
+          </dl>
+          <!-- Static image, not a Google Maps iframe: an embed ships ~300KB and
+               sets Google cookies for every visitor before anyone asks for a
+               map. This is a 136KB picture stitched from OpenStreetMap tiles,
+               desaturated to sit with the palette, linking out to your existing
+               Maps pin. ODbL requires the attribution, which is burned in.
+               The card now carries the address, so it replaces three blocks. -->
+          <a class="contact-map" href="https://maps.app.goo.gl/m9T7pvFitFbhBjsg8"
+             target="_blank" rel="noopener"
+             aria-label="Open the centre's location in Google Maps">
+            <img src="img/map.webp" width="900" height="600"
+                 alt="Map showing the centre on 11th Main Road, HAL 2nd Stage, Indiranagar" loading="lazy">
+            <span class="contact-map-label">
+              <span class="contact-map-address">475, 3rd Cross, 11th Main Rd,<br>HAL 2nd Stage, Bengaluru 560008</span>
+              <span class="contact-map-cta">Open in Google Maps &rarr;</span>
+            </span>
+          </a>
+          <!-- Uncomment once the center's real handles are in. Dead href="#" icons were removed.
+          <div class="social-links">
+            <a href="https://facebook.com/…" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+            <a href="https://instagram.com/…" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+            <a href="https://youtube.com/…" target="_blank" rel="noopener" aria-label="YouTube">yt</a>
+            <a href="https://wa.me/919986347648" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>
+          </div>
+          -->
+        </div>
+        <form class="contact-form" id="contactForm">
+          <h3>Send us a message</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" required placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXX XXXXX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com">
+          </div>
+          <div class="form-group">
+            <label for="course">Interested Course</label>
+            <!-- Options built from js/data.js so this can't drift out of sync with the courses above -->
+            <select id="course" name="course">
+              <option value="">Select a program</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell us how we can help you..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Send Message</button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>
+          <img class="logo-mark" src="img/aol-logo.svg" alt="The Art of Living" width="273" height="107">
+          <small>Indiranagar</small>
+        </h4>
+        <p>Bringing peace and happiness to your doorstep through the ancient wisdom of yoga and meditation.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#upcoming">Upcoming</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Programs</h4>
+        <ul>
+          <li><a href="#courses">Happiness Program</a></li>
+          <li><a href="#courses">Sahaj Samadhi Meditation</a></li>
+          <li><a href="#courses">Sri Sri Yoga</a></li>
+          <li><a href="#courses">Lemurian Yoga</a></li>
+          <li><a href="#courses">Children's Programs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit Us</h4>
+        <p>475, 3rd Cross, 11th Main Rd,<br> HAL 2nd Stage, Indiranagar,<br>Bengaluru, Karnataka 560008</p>
+        <p><a href="tel:+919986347648">+91 99863 47648</a></p>
+        <p><a href="https://maps.app.goo.gl/m9T7pvFitFbhBjsg8" target="_blank" rel="noopener" class="footer-map-link">Get Directions →</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> Art of Living Happiness Center, Indiranagar. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
