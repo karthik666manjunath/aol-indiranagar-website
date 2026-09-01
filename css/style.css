@@ -290,25 +290,26 @@ h1, h2, h3, h4 {
   pointer-events: none;
 }
 .hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
-/* The hook is a sentence, so it gets sentence styling — the uppercase
-   tracked treatment below is for labels and is unreadable at this length. */
+/* The visitor's own words, in the same italic serif voice as the h1's
+   highlight — hook and headline read as one problem/answer unit. */
 .hero-hook {
-  font-size: var(--fs-md);
-  max-width: 640px;
-  margin: 0 auto 20px;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  color: var(--ink-soft);
+  margin: 0 auto 18px;
   text-wrap: balance;
 }
 /* Each clause is one unbreakable unit, so lines break between the three
    contradictions, never inside one. */
 .hero-hook span { white-space: nowrap; }
-/* Now the signature under the answer, not the opening line. */
 .hero-subtitle {
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 3.5px;
   text-transform: uppercase;
   color: var(--clay);
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 .hero-title {
   font-family: var(--font-heading);
@@ -323,8 +324,8 @@ h1, h2, h3, h4 {
 .hero-text {
   font-size: var(--fs-md);
   text-wrap: balance;
-  max-width: 520px;
-  margin: 0 auto 28px;
+  max-width: 660px;
+  margin: 0 auto 44px;
   line-height: 1.85;
 }
 .hero-buttons {
