@@ -87,6 +87,13 @@
         <path d="M2.75 12h18.5"/>
         <path d="M12 2.75c3.4 3.2 3.4 15.3 0 18.5-3.4-3.2-3.4-15.3 0-18.5Z"/>
       </symbol>
+      <!-- The breath, as a diagram: shallow and fast easing into slow and
+           deep. Drawn for the Why Sudarshan Kriya grid cell — it argues the
+           section's point, unlike the ensō it replaced (which read as a
+           loading spinner at cell size). -->
+      <symbol id="i-breathwave" viewBox="0 0 240 80">
+        <path d="M0 40 Q4.5 30 9 40 Q13.5 50 18 40 Q22.5 30 27 40 Q31.5 50 36 40 Q40.5 30 45 40 Q49.5 50 54 40 Q65 16 76 40 Q87 64 98 40 Q109 16 120 40 Q145 80 170 40 Q195 0 220 40 L240 40"/>
+      </symbol>
     </defs>
   </svg>
 
@@ -122,22 +129,23 @@
   <!-- Hero -->
   <section class="hero" id="home">
     <div class="container hero-content">
+      <!-- The page opens on the reader's actual complaint, not the centre's
+           name — the nav logo already carries identity, and the name reappears
+           as the signature line before the buttons. Three contradictions at
+           body size, one answer at display size; all three clauses are setup,
+           so no italic punchline here — the h1 is the punchline. -->
+      <p class="hero-hook"><span>Tired, but can&rsquo;t sleep.</span> <span>Busy, but stuck.</span> <span>Relaxing, but still tense.</span></p>
+      <h1 class="hero-title">Bring your mind<br><span class="highlight">in sync with the body</span></h1>
+      <p class="hero-text">The body doing one thing, the mind doing another. Breath is the one rhythm both share, and Sudarshan Kriya uses it to bring them in harmony.</p>
       <p class="hero-subtitle">Art of Living Happiness Center · Indiranagar</p>
-      <h1 class="hero-title">Breathe. Meditate.<br><span class="highlight">Be happy.</span></h1>
-      <p class="hero-text">Discover inner peace and lasting happiness through the timeless wisdom of yoga and meditation, guided by the Art of Living foundation.</p>
       <div class="hero-buttons">
         <a href="#courses" class="btn btn-primary btn-lg">Explore Courses</a>
         <a href="#contact" class="btn btn-outline btn-lg">Visit the Center</a>
       </div>
-      <!-- Facts about THIS center only. The previous row — 45+ years, 180+
-           countries — described the global foundation; a visitor deciding
-           whether to walk in learned nothing about Indiranagar from it.
-           These three are all verifiable from the content further down.
-
-           If you have real center numbers, they are stronger than any of
-           these and belong here instead: years at this address, students
-           taught here, certified teachers on staff. Just write "500+"
-           straight into .stat-number — there's no separate suffix element. -->
+      <!-- The old stats strip lived here. If you have real center numbers —
+           years at this address, students taught here, teachers on staff —
+           they are stronger than any claim on this page, and .hero-stats /
+           .stat / .stat-number in style.css are still waiting for them. -->
     </div>
   </section>
 
@@ -150,19 +158,51 @@
           <h2 class="section-title">A sanctuary of peace in the heart of Indiranagar</h2>
           <p>The Art of Living Happiness Center in Indiranagar is a beacon of holistic well-being, offering time-tested techniques that bring harmony to body, mind, and spirit. Founded on the principles of <strong>Sri Sri Ravi Shankar</strong>, our center has been transforming lives through the power of breath, meditation, and yoga.</p>
           <p>Whether you're a beginner taking your first step toward wellness or a seasoned practitioner deepening your journey, our experienced instructors guide you with warmth and expertise every step of the way.</p>
-          <!-- Concrete facts beat adjectives here. "Supportive community" and
-               "serene environment" are claims every centre makes; batch sizes,
-               languages taught, parking and transport are the things someone
-               actually weighs before walking in. Replace these with your real
-               details — I only know the last two from the address. -->
+          <!-- Concrete facts beat adjectives here: batch sizes, languages
+               taught, parking and transport are what someone actually weighs
+               before walking in. Replace prose with real details when known. -->
         </div>
-        <!-- Shown at its native 3:2 — no crop at all. The slot used to be 4:5
-             portrait, which would have discarded 47% of the frame's width and
-             cut the room in half. -->
+        <!-- Shown at its native 3:2 — no crop at all. -->
         <figure class="about-media">
           <img src="img/hero-class.webp" width="1280" height="853"
                alt="A group seated on yoga mats in the centre's studio, practising a guided breathing exercise in afternoon light">
         </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Sudarshan Kriya -->
+  <!-- Copy from Divya, 01 Sep, re-sequenced as the mechanism in order:
+       breathe -> settle -> clear. Hairline grid of cells (Daylight's pattern
+       on Mobbin) — line-language, not cards. The ensō sits in its own cell:
+       decoration promoted to a grid occupant instead of floating behind. -->
+  <section class="section kriya" id="kriya">
+    <div class="container">
+      <div class="kriya-grid">
+        <div class="kriya-cell kriya-head">
+          <p class="section-tag">Why Sudarshan Kriya</p>
+          <h2 class="section-title">Telling yourself to relax <em>never works</em></h2>
+          <p class="kriya-lead">When the mind won&rsquo;t stop racing, effort only adds noise. Sudarshan Kriya works underneath the effort &mdash; in order:</p>
+        </div>
+        <div class="kriya-cell kriya-wave" aria-hidden="true">
+          <svg><use href="#i-breathwave"/></svg>
+        </div>
+        <div class="kriya-cell kriya-step">
+          <span class="kriya-num">01</span>
+          <h3>It starts with rhythm</h3>
+          <p>Guided cycles of breath, taught in person. No experience needed, nothing to believe, nothing to get right &mdash; the rhythm does the work.</p>
+        </div>
+        <div class="kriya-cell kriya-step">
+          <span class="kriya-num">02</span>
+          <h3>The body settles</h3>
+          <p>The rhythm switches off the hidden inner tension that &ldquo;just relax&rdquo; can never reach, and your system resets from the inside out.</p>
+        </div>
+        <div class="kriya-cell kriya-step">
+          <span class="kriya-num">03</span>
+          <h3>The mind clears</h3>
+          <p>With the clutter gone, quiet and effortless creativity come back &mdash; the space the mind needs to focus, create and thrive.</p>
+        </div>
+        <p class="kriya-cell kriya-note">Sudarshan Kriya is taught here through the <a href="#courses">Happiness Program</a>.</p>
       </div>
     </div>
   </section>

@@ -278,14 +278,37 @@ h1, h2, h3, h4 {
   text-align: center;
   overflow: hidden;
 }
+/* A still wash of the two accent tints — warmth without a photo and without
+   motion. Fixed pixel radii, not %, so ultrawide screens don't smear it. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(560px 420px at 78% 18%, var(--clay-tint), transparent 70%),
+    radial-gradient(640px 480px at 18% 85%, var(--sage-tint), transparent 70%);
+  pointer-events: none;
+}
 .hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+/* The hook is a sentence, so it gets sentence styling — the uppercase
+   tracked treatment below is for labels and is unreadable at this length. */
+.hero-hook {
+  font-size: var(--fs-md);
+  max-width: 640px;
+  margin: 0 auto 20px;
+  text-wrap: balance;
+}
+/* Each clause is one unbreakable unit, so lines break between the three
+   contradictions, never inside one. */
+.hero-hook span { white-space: nowrap; }
+/* Now the signature under the answer, not the opening line. */
 .hero-subtitle {
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 3.5px;
   text-transform: uppercase;
   color: var(--clay);
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 .hero-title {
   font-family: var(--font-heading);
@@ -301,7 +324,7 @@ h1, h2, h3, h4 {
   font-size: var(--fs-md);
   text-wrap: balance;
   max-width: 520px;
-  margin: 0 auto 40px;
+  margin: 0 auto 28px;
   line-height: 1.85;
 }
 .hero-buttons {
@@ -562,6 +585,67 @@ h1, h2, h3, h4 {
    urgency on a page about not being anxious. */
 .seats-left { color: var(--ink-soft); }
 
+/* ---- Why Sudarshan Kriya ----
+   A hairline grid of cells on the clay band (Daylight's pattern): the 1px
+   gaps over a clay-toned background draw the grid, so every line is shared
+   between neighbours. Still line-language, not cards. Lowest pair on this
+   tint: clay text at 4.97:1. */
+.kriya { background: var(--clay-tint); }
+.kriya-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(168, 72, 18, 0.25); /* the grid lines */
+  border: 1px solid rgba(168, 72, 18, 0.25);
+}
+.kriya-cell { background: var(--clay-tint); padding: 44px; }
+.kriya-head { grid-column: 1 / 3; }
+.kriya-head .section-title { margin-bottom: 22px; }
+.kriya .section-title em { color: var(--clay); }
+.kriya-lead { font-size: var(--fs-md); max-width: 52ch; }
+/* The breath waveform, resident in its own cell: shallow-fast easing into
+   slow-deep, left to right — the section's argument as a line. */
+.kriya-wave { display: grid; place-items: center; }
+.kriya-wave svg {
+  width: 92%;
+  aspect-ratio: 3 / 1;
+  height: auto;
+  fill: none;
+  stroke: var(--clay);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+.kriya-num {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  color: var(--clay);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.kriya-step h3 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.kriya-step p { font-size: var(--fs-sm); }
+.kriya-note {
+  grid-column: 1 / -1;
+  padding: 22px 44px;
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+.kriya-note a {
+  color: var(--clay);
+  font-weight: 600;
+  border-bottom: 1px solid currentColor;
+  transition: var(--transition);
+}
+.kriya-note a:hover { color: var(--clay-hover); }
+
 /* ---- Why Us ---- */
 .why-us { background: var(--sage-tint); }
 /* Explicit column counts, not auto-fill: there are exactly four cards, and
@@ -572,8 +656,16 @@ h1, h2, h3, h4 {
   gap: 48px 40px;
 }
 .why-card { text-align: left; }
+/* The icon sits in a paper disc on the tinted band — anchored, not
+   floating. Disc, not rounded square: circles are the page's icon language. */
 .why-icon {
-  font-size: 2.5rem;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--paper);
+  font-size: 1.75rem;
   line-height: 1;
   color: var(--sage);
   margin-bottom: 20px;
@@ -904,6 +996,10 @@ h1, h2, h3, h4 {
   .section-header.align-left .section-tag { grid-area: auto; }
   .courses-grid { gap: 56px; }
   .why-grid { gap: 40px 32px; }
+  .kriya-grid { grid-template-columns: 1fr 1fr; }
+  .kriya-head { grid-column: 1 / -1; }
+  .kriya-wave { display: none; }
+  .kriya-cell { padding: 32px; }
   .form-row { grid-template-columns: 1fr; }
   .nav-logo .logo-mark { height: 1.9rem; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -918,6 +1014,7 @@ h1, h2, h3, h4 {
   /* phone + long email side by side overflow this narrow */
   .contact-details { grid-template-columns: 1fr; gap: 18px; }
   .course-row { grid-template-columns: 1fr; }
+  .kriya-grid { grid-template-columns: 1fr; }
   .course-desc, .course-cta { grid-column: 1; }
   .hero-stats { flex-direction: column; }
   .stat + .stat { border-left: none; border-top: 1px solid var(--line); }
