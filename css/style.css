@@ -647,6 +647,9 @@ h1, h2, h3, h4 {
 }
 .kriya-note a:hover { color: var(--clay-hover); }
 
+/* ---- Who It's For (Spine Care) ---- */
+.who { background: var(--paper); }
+
 /* ---- Why Us ---- */
 .why-us { background: var(--sage-tint); }
 /* Explicit column counts, not auto-fill: there are exactly four cards, and
@@ -655,6 +658,31 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 48px 40px;
+}
+/* ---- Details (Spine Care) ----
+   The centre runs this in person only, so there is nothing to compare:
+   four facts as label/value pairs on a hairline, the same dt/dd treatment
+   as the contact column. A "choose your format" table needs at least two
+   formats to choose from. */
+.detail-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px 40px;
+  border-top: 1px solid var(--line);
+  padding-top: 30px;
+}
+.detail-list dt {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 6px;
+}
+.detail-list dd {
+  color: var(--ink);
+  font-size: var(--fs-md);
+  line-height: 1.5;
 }
 .why-card { text-align: left; }
 /* The icon sits in a paper disc on the tinted band — anchored, not
@@ -968,6 +996,7 @@ h1, h2, h3, h4 {
   .course-desc, .course-cta { grid-column: 2; }
   .course-desc { margin-top: 4px; }
   .course-cta { margin-top: 10px; }
+  .detail-list { grid-template-columns: repeat(2, 1fr); gap: 26px 40px; }
   .nav-menu {
     position: fixed;
     top: 0; right: -100%;

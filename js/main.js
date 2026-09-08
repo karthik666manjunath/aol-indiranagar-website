@@ -38,14 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <div class="category-grid">
         ${cat.courses.map(c => `
-          <a class="course-row" href="#contact" aria-label="Enquire about ${c.title}">
+          <a class="course-row" href="${c.href || '#contact'}" aria-label="${c.ctaLabel || 'Enquire'} about ${c.title}">
             <span class="course-icon">${icon(c.icon)}</span>
             <div class="course-head">
               <h3>${c.title}</h3>
               <span class="course-tag ${c.tagClass}">${c.tag}</span>
             </div>
             <p class="course-desc">${c.desc}</p>
-            <span class="course-cta">Enquire &rarr;</span>
+            <span class="course-cta">${c.ctaLabel || 'Enquire'} &rarr;</span>
           </a>
         `).join('')}
       </div>
@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="upcoming-meta">
           <span>${u.category}</span>
           <span>${u.time}</span>
+          ${u.venue ? `<span>${u.venue}</span>` : ''}
           ${u.seats ? `<span class="seats-left">${u.seats} places</span>` : ''}
         </div>
       </div>

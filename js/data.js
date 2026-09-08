@@ -7,7 +7,12 @@
 // `icon` is an id from the <svg> sprite at the top of
 // index.html (i-lotus, i-stillness, i-seated, i-wave,
 // i-spark, i-sunrise, i-book, i-breath, i-clarity,
-// i-bloom, i-globe). Add a new <symbol> there first.
+// i-bloom, i-globe, i-spinecurve). Add a new <symbol>
+// there first.
+//
+// `href` and `ctaLabel` are optional. Every course links
+// to #contact and reads "Enquire →" unless you set these —
+// used by Spine Care, which has its own page.
 // ============================================
 
 window.SITE_DATA = {
@@ -52,6 +57,15 @@ window.SITE_DATA = {
           title: 'Lemurian Yoga',
           desc: 'A gentle, meditative yoga style rooted in ancient Lemurian wisdom. Slow, flowing movements and deep breath awareness release tension and awaken a profound mind-body connection.',
         },
+        {
+          icon: 'i-spinecurve',
+          tag: 'Posture & Pain Relief',
+          tagClass: 'tag-calm',
+          title: 'Spine Care Yoga & Posture Program',
+          desc: 'Corrects the mechanics behind back, neck and posture pain — sitting mechanics, alignment and targeted strength — for desk workers, chronic pain and prevention alike.',
+          href: 'spine-care.html',
+          ctaLabel: 'Learn more',
+        },
       ],
     },
     {
@@ -88,9 +102,22 @@ window.SITE_DATA = {
   // The previous entries were invented placeholder dates — publishing those sends
   // people to classes that don't exist. Add real batches and the section reappears.
   // Shape: { day: '05', month: 'Sep', title: <must match a program above>,
-  //          category: <must match a category name above>, time: 'Sat & Sun · 7:00 AM – 1:00 PM', seats: 12 }
-  // `seats` is optional — omit it and the "Only N seats left" line is left off.
-  upcoming: [],
+  //          category: <must match a category name above>, time: 'Sat & Sun · 7:00 AM – 1:00 PM',
+  //          venue: 'Indiranagar, Bengaluru', seats: 12 }
+  // `venue` and `seats` are optional — omit either and its line is left off.
+  // This same batch's date/time is also folded into the "In-Person" format
+  // card on spine-care.html (`.format-next`, that page has no data.js/main.js
+  // of its own) — update both if it changes.
+  upcoming: [
+    {
+      day: '1–4',
+      month: 'Oct',
+      title: 'Spine Care Yoga & Posture Program',
+      category: 'Yoga Programs',
+      time: '6:30 – 9:00 AM',
+      venue: 'Indiranagar, Bengaluru',
+    },
+  ],
 
   // ---- Testimonials ----
   // EMPTY = the "Testimonials" section and its nav links hide themselves.
