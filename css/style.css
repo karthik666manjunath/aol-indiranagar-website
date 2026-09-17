@@ -535,11 +535,16 @@ h1, h2, h3, h4 {
 
 /* ---- Upcoming Programs ---- */
 .upcoming { background: var(--paper); }
+/* One block per program, spaced like .courses-grid so the two sign-up
+   sections keep sharing a language. */
 .upcoming-list {
   max-width: 820px;
   margin: 0 auto;
-  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 76px;
 }
+.upcoming-rows { border-top: 1px solid var(--line); }
 .upcoming-card {
   display: flex;
   align-items: center;
@@ -556,7 +561,9 @@ h1, h2, h3, h4 {
 .upcoming-date .day {
   display: block;
   font-family: var(--font-heading);
-  font-size: var(--fs-xl);
+  /* A step below the group heading above it: the program name is the senior
+     element in the block, the date is what varies under it. */
+  font-size: var(--fs-lg);
   font-weight: 500;
   line-height: 1.1;
   color: var(--ink);
@@ -570,7 +577,9 @@ h1, h2, h3, h4 {
   color: var(--clay);
 }
 .upcoming-info { flex: 1; }
-.upcoming-info h3 {
+/* Was the program title; that moved up to the group heading, so the time —
+   the thing that actually differs between batches — takes the top line. */
+.upcoming-when {
   font-family: var(--font-heading);
   font-size: var(--fs-md);
   font-weight: 500;

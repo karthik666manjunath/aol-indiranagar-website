@@ -74,32 +74,64 @@ document.addEventListener('DOMContentLoaded', () => {
   // ponytail: date block shows the start month only ("18–20 Sep"); a batch
   // spanning a month boundary would need "30 Sep – 2 Oct". None do yet.
   const dayOf = (iso) => String(Number(iso.slice(8, 10)));
-  live.forEach(u => {
-    const day = u.start === u.end ? dayOf(u.start) : `${dayOf(u.start)}–${dayOf(u.end)}`;
-    // en-US, not en-IN: en-IN abbreviates September as "Sept", the rest of the
-    // site uses three letters.
-    const month = new Date(u.start).toLocaleDateString('en-US', { month: 'short' });
+  const dayRange = (u) =>
+    u.start === u.end ? dayOf(u.start) : `${dayOf(u.start)}–${dayOf(u.end)}`;
+  // en-US, not en-IN: en-IN abbreviates September as "Sept", the rest of the
+  // site uses three letters.
+  const monthOf = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short' });
+
+  // One row per batch. The program name lives on the group heading above,
+  // so the row carries only what differs between batches — dates, time,
+  // venue. The button repeats the name in its aria-label, since "Register"
+  // on its own tells a screen reader nothing about what for.
+  function batchRow(u) {
+    const when = `${dayRange(u)} ${monthOf(u.start)}`;
     const button = u.register
-      ? `<a href="${u.register}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Register &rarr;</a>`
-      : `<a href="#contact" class="btn btn-outline btn-sm reserve-btn" data-program="${u.title}">Enquire</a>`;
-    const card = document.createElement('div');
-    card.className = 'upcoming-card';
-    card.innerHTML = `
-      <div class="upcoming-date">
-        <span class="day">${day}</span>
-        <span class="month">${month}</span>
-      </div>
-      <div class="upcoming-info">
-        <h3>${u.title}</h3>
-        <div class="upcoming-meta">
-          <span>${u.time}</span>
-          ${u.venue ? `<span>${u.venue}</span>` : ''}
-          ${u.seats ? `<span class="seats-left">${u.seats} places</span>` : ''}
+      ? `<a href="${u.register}" target="_blank" rel="noopener" class="btn btn-primary btn-sm"
+            aria-label="Register for ${u.title}, ${when}">Register &rarr;</a>`
+      : `<a href="#contact" class="btn btn-outline btn-sm reserve-btn" data-program="${u.title}"
+            aria-label="Enquire about ${u.title}, ${when}">Enquire</a>`;
+    return `
+      <div class="upcoming-card">
+        <div class="upcoming-date">
+          <span class="day">${dayRange(u)}</span>
+          <span class="month">${monthOf(u.start)}</span>
         </div>
+        <div class="upcoming-info">
+          <p class="upcoming-when">${u.time}</p>
+          <div class="upcoming-meta">
+            ${u.venue ? `<span>${u.venue}</span>` : ''}
+            ${u.seats ? `<span class="seats-left">${u.seats} places</span>` : ''}
+          </div>
+        </div>
+        ${button}
       </div>
-      ${button}
     `;
-    upcomingList.appendChild(card);
+  }
+
+  // Group by program, so four Happiness dates read as one program offered
+  // four times rather than four near-identical rows with a Spine Care row
+  // hidden among them. A Map keeps insertion order, and `live` is already
+  // sorted by date, so groups come out soonest-first too. Reuses the
+  // .category-header used by the Courses section above — same job, same
+  // look, no new heading style.
+  const groups = new Map();
+  live.forEach(u => {
+    if (!groups.has(u.title)) groups.set(u.title, []);
+    groups.get(u.title).push(u);
+  });
+
+  groups.forEach((batches, title) => {
+    const group = document.createElement('div');
+    group.className = 'upcoming-group';
+    group.innerHTML = `
+      <div class="category-header">
+        <h3>${title}</h3>
+        <p>${batches.length} ${batches.length === 1 ? 'date' : 'dates'}</p>
+      </div>
+      <div class="upcoming-rows">${batches.map(batchRow).join('')}</div>
+    `;
+    upcomingList.appendChild(group);
   });
   if (!live.length) hideSection('upcoming');
 
