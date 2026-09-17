@@ -17,10 +17,15 @@ repo.
 | `css/style.css` | Design tokens are at the top and are the whole system. |
 | `img/`, `fonts/` | Assets. |
 
-`upcoming` and `testimonials` in `data.js` are empty on purpose. While a list is
-empty its section — and every nav and footer link pointing at it — hides itself,
-so the page never ships an empty section or a dead anchor. Fill the array and
-the section reappears.
+`testimonials` in `data.js` is empty on purpose. While a list is empty its
+section — and every nav and footer link pointing at it — hides itself, so the
+page never ships an empty section or a dead anchor. Fill the array and the
+section reappears.
+
+`upcoming` batches carry ISO `start`/`end` dates and drop off the page by
+themselves the day after they end; when none are left the section hides like
+the others. A batch with a `register` link gets a "Register →" button straight
+to it, otherwise "Enquire" opens the contact form with the program pre-selected.
 
 ## Conventions worth knowing before editing
 
@@ -40,4 +45,4 @@ the section reappears.
 - [ ] Consent from the people in `img/hero-class.webp` before it is public.
 - [ ] Confirm the opening hours claimed in the hero stats strip.
 - [ ] Set the real domain in the `canonical` / `og:url` / `og:image` tags.
-- [ ] Add real upcoming batches, and real testimonials if you collect them.
+- [ ] Add real testimonials if you collect them (upcoming batches are in).

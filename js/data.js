@@ -98,24 +98,59 @@ window.SITE_DATA = {
   ],
 
   // ---- Upcoming batches ----
-  // EMPTY = the whole "Upcoming Programs" section and its nav links hide themselves.
-  // The previous entries were invented placeholder dates — publishing those sends
-  // people to classes that don't exist. Add real batches and the section reappears.
-  // Shape: { day: '05', month: 'Sep', title: <must match a program above>,
-  //          category: <must match a category name above>, time: 'Sat & Sun · 7:00 AM – 1:00 PM',
-  //          venue: 'Indiranagar, Bengaluru', seats: 12 }
-  // `venue` and `seats` are optional — omit either and its line is left off.
-  // This same batch's date/time is also folded into the "In-Person" format
-  // card on spine-care.html (`.format-next`, that page has no data.js/main.js
-  // of its own) — update both if it changes.
+  // A batch drops off the page by itself the day after its `end` date, and
+  // when none are left the whole "Upcoming Programs" section and its nav
+  // links hide themselves. Rows render sorted by `start`, so order here
+  // doesn't matter. Don't invent placeholder dates — that sends people to
+  // classes that don't exist.
+  // Shape: { start: '2026-09-18', end: '2026-09-20' (ISO dates),
+  //          title: <must match a program above>,
+  //          time: 'Fri–Sun · 6:00 – 9:00 PM', venue: 'Indiranagar, Bengaluru',
+  //          register: 'https://aolt.in/…', seats: 12 }
+  // `venue`, `seats` and `register` are optional. With `register` the row's
+  // button is "Register →" straight to that link; without it the button is
+  // "Enquire" and pre-selects the program in the contact form.
+  // The Spine Care dates are also hard-coded in spine-care.html's Details
+  // section (that page has no data.js/main.js) — update both if they change.
   upcoming: [
     {
-      day: '1–4',
-      month: 'Oct',
-      title: 'Spine Care Yoga & Posture Program',
-      category: 'Yoga Programs',
-      time: '6:30 – 9:00 AM',
+      start: '2026-09-18',
+      end: '2026-09-20',
+      title: 'Happiness Program',
+      time: 'Fri–Sun · 6:00 – 9:00 PM',
       venue: 'Indiranagar, Bengaluru',
+      register: 'https://aolt.in/1034608',
+    },
+    {
+      start: '2026-09-25',
+      end: '2026-09-27',
+      title: 'Happiness Program',
+      time: 'Fri–Sun · 6:00 – 9:00 PM',
+      venue: 'Indiranagar, Bengaluru',
+      register: 'https://aolt.in/1056654',
+    },
+    {
+      start: '2026-10-01',
+      end: '2026-10-04',
+      title: 'Spine Care Yoga & Posture Program',
+      time: 'Thu–Sun · 6:30 – 9:00 AM',
+      venue: 'Indiranagar, Bengaluru',
+    },
+    {
+      start: '2026-10-02',
+      end: '2026-10-04',
+      title: 'Happiness Program',
+      time: 'Fri–Sun · 9:30 AM – 12:30 PM',
+      venue: 'Indiranagar, Bengaluru',
+      register: 'https://aolt.in/1034602',
+    },
+    {
+      start: '2026-10-16',
+      end: '2026-10-18',
+      title: 'Happiness Program',
+      time: 'Fri–Sun · 6:00 – 9:00 PM',
+      venue: 'Indiranagar, Bengaluru',
+      register: 'https://aolt.in/1034600',
     },
   ],
 

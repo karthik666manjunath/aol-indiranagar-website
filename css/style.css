@@ -550,7 +550,7 @@ h1, h2, h3, h4 {
 }
 .upcoming-date {
   flex-shrink: 0;
-  width: 62px;
+  width: 84px; /* fits a two-digit range like "18–20" at --fs-xl */
   text-align: center;
 }
 .upcoming-date .day {

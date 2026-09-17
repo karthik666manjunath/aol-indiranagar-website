@@ -63,29 +63,45 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ---- Render Upcoming Programs ----
+  // Batches whose last day has passed drop off by themselves, so nobody has
+  // to remember to edit data.js the morning after a course ends.
   const upcomingList = document.getElementById('upcomingList');
-  upcoming.forEach(u => {
+  const today = new Date(new Date().toDateString()); // local midnight
+  const live = upcoming
+    .filter(u => new Date(u.end) >= today)
+    .sort((a, b) => a.start.localeCompare(b.start));
+
+  // ponytail: date block shows the start month only ("18–20 Sep"); a batch
+  // spanning a month boundary would need "30 Sep – 2 Oct". None do yet.
+  const dayOf = (iso) => String(Number(iso.slice(8, 10)));
+  live.forEach(u => {
+    const day = u.start === u.end ? dayOf(u.start) : `${dayOf(u.start)}–${dayOf(u.end)}`;
+    // en-US, not en-IN: en-IN abbreviates September as "Sept", the rest of the
+    // site uses three letters.
+    const month = new Date(u.start).toLocaleDateString('en-US', { month: 'short' });
+    const button = u.register
+      ? `<a href="${u.register}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Register &rarr;</a>`
+      : `<a href="#contact" class="btn btn-outline btn-sm reserve-btn" data-program="${u.title}">Enquire</a>`;
     const card = document.createElement('div');
     card.className = 'upcoming-card';
     card.innerHTML = `
       <div class="upcoming-date">
-        <span class="day">${u.day}</span>
-        <span class="month">${u.month}</span>
+        <span class="day">${day}</span>
+        <span class="month">${month}</span>
       </div>
       <div class="upcoming-info">
         <h3>${u.title}</h3>
         <div class="upcoming-meta">
-          <span>${u.category}</span>
           <span>${u.time}</span>
           ${u.venue ? `<span>${u.venue}</span>` : ''}
           ${u.seats ? `<span class="seats-left">${u.seats} places</span>` : ''}
         </div>
       </div>
-      <a href="#contact" class="btn btn-outline btn-sm reserve-btn" data-program="${u.title}">Enquire</a>
+      ${button}
     `;
     upcomingList.appendChild(card);
   });
-  if (!upcoming.length) hideSection('upcoming');
+  if (!live.length) hideSection('upcoming');
 
   // Pre-select the program in the contact form when enquiring about a batch
   upcomingList.addEventListener('click', (e) => {
