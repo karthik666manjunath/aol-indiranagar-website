@@ -97,30 +97,47 @@ window.SITE_DATA = {
     },
   ],
 
+  // ---- Upcoming batch card defaults ----
+  // Every batch card carries the same heading, price and languages. These are
+  // the values it uses; a batch can override any of the three by setting the
+  // same key on itself.
+  //
+  // NOTE: `heading` is what the card displays, and what the filter above the
+  // cards groups by. It is NOT the batch's `title` below, which still has to
+  // match a program in courseCategories so the contact form can pre-select it. A batch for anything other than the
+  // Happiness Program needs its own `heading`, or it inherits this one — the
+  // Spine Care batch below sets its own for exactly that reason.
+  batchDefaults: {
+    heading: 'Happiness Program',
+    price: '₹ 2,500',
+    languages: 'English, Hindi',
+    venue: 'Indiranagar, Bengaluru',
+    // Shown when a batch has no `time` of its own.
+    time: 'Various timings',
+    // The asterisk on the price points at this line, under the button.
+    note: 'Your contribution benefits a host of social projects',
+    // No `ctaLabel` here on purpose: the button says "Register" when a batch
+    // has a `register` link and "Enquire" when it doesn't. Set `ctaLabel` on a
+    // batch to override that.
+  },
+
   // ---- Upcoming batches ----
   // A batch drops off the page by itself the day after its `end` date, and
   // when none are left the whole "Upcoming Programs" section and its nav
-  // links hide themselves. Rows render sorted by `start`, so order here
+  // links hide themselves. Cards render sorted by `start`, so order here
   // doesn't matter. Don't invent placeholder dates — that sends people to
   // classes that don't exist.
   // Shape: { start: '2026-09-18', end: '2026-09-20' (ISO dates),
   //          title: <must match a program above>,
   //          time: 'Fri–Sun · 6:00 – 9:00 PM', venue: 'Indiranagar, Bengaluru',
-  //          register: 'https://aolt.in/…', seats: 12 }
-  // `venue`, `seats` and `register` are optional. With `register` the row's
-  // button is "Register →" straight to that link; without it the button is
-  // "Enquire" and pre-selects the program in the contact form.
+  //          register: 'https://aolt.in/…' }
+  // Everything but `start`, `end` and `title` is optional and falls back to
+  // batchDefaults above. With `register` the card's button links straight to
+  // that page; without it the button opens the contact form with the program
+  // pre-selected.
   // The Spine Care dates are also hard-coded in spine-care.html's Details
   // section (that page has no data.js/main.js) — update both if they change.
   upcoming: [
-    {
-      start: '2026-09-18',
-      end: '2026-09-20',
-      title: 'Happiness Program',
-      time: 'Fri–Sun · 6:00 – 9:00 PM',
-      venue: 'Indiranagar, Bengaluru',
-      register: 'https://aolt.in/1034608',
-    },
     {
       start: '2026-09-25',
       end: '2026-09-27',
@@ -133,8 +150,17 @@ window.SITE_DATA = {
       start: '2026-10-01',
       end: '2026-10-04',
       title: 'Spine Care Yoga & Posture Program',
+      // Its own heading, so this card stops borrowing the Happiness Program's.
+      heading: 'Spine Care Yoga & Posture Program',
       time: 'Thu–Sun · 6:30 – 9:00 AM',
       venue: 'Indiranagar, Bengaluru',
+      // No `register` link, so the button reads "Enquire" and scrolls to the
+      // contact form with this program already chosen.
+      // Enquiry-based, so no price is shown — and with no price there is
+      // nothing for the contribution note's asterisk to point at, so that goes
+      // too. Setting either to a string brings it back.
+      price: null,
+      note: null,
     },
     {
       start: '2026-10-02',
