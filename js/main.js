@@ -186,7 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Pre-select the program in the contact form when someone enquires about a
   // batch that has no booking link of its own — the button only scrolls them
   // to the form, so it has to arrive already filled in.
-  upcomingList.addEventListener('click', (e) => {
+  // Delegated from the document, not from upcomingList: the hero carousel
+  // renders the same button for the next batch, and scoping this to the
+  // section meant a click up there scrolled to an empty form.
+  document.addEventListener('click', (e) => {
     const btn = e.target.closest('.reserve-btn');
     if (!btn) return;
     courseSelect.value = btn.dataset.program;
@@ -519,8 +522,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function goToSlide(index) {
-    const slides = document.querySelectorAll('.testimonial-slide');
-    const dots = document.querySelectorAll('.slider-dot');
+    const slides = slider.querySelectorAll('.testimonial-slide');
+    // Scoped to this slider: the hero carousel reuses .slider-dot for its own
+    // dots, and a document-wide query would index into those too.
+    const dots = dotsContainer.querySelectorAll('.slider-dot');
     slides[currentSlide].classList.remove('active');
     dots[currentSlide].classList.remove('active');
     currentSlide = index;
@@ -529,6 +534,162 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (!testimonials.length) hideSection('testimonials');
+
+  // ---- Hero carousel ----
+  // Slide 3 is the next batch, read off the same `live` list the Upcoming
+  // Programs section renders from — no second copy of the dates, and no
+  // hardcoded course. Its blurb comes from the matching entry in
+  // courseCategories, so the description lives in one place too.
+  const hcTrack = document.getElementById('hcTrack');
+  const hcSlides = [...hcTrack.querySelectorAll('.hc-slide')];
+  const hcCourseSlide = document.getElementById('hcCourseSlide');
+
+  const next = live[0];
+  if (next) {
+    const d = { ...window.SITE_DATA.batchDefaults, ...next };
+    const when = dateRange(next);
+    const blurb = courseCategories
+      .flatMap(cat => cat.courses)
+      .find(c => c.title === next.title);
+
+    // Same button, same wording rule and same click handler as the cards
+    // below: with a booking link it registers, without one it scrolls to the
+    // contact form with the program already chosen.
+    const cta = d.ctaLabel || (next.register ? 'Register' : 'Enquire');
+    const button = next.register
+      ? `<a href="${next.register}" target="_blank" rel="noopener"
+            class="btn btn-primary btn-register"
+            aria-label="${cta} for ${d.heading}, ${when}">${cta}</a>`
+      : `<a href="#contact" class="btn btn-primary btn-register reserve-btn"
+            data-program="${next.title}"
+            aria-label="${cta} about ${d.heading}, ${when}">${cta}</a>`;
+
+    // Left-aligned, two columns on a desktop: the pitch down the left, the
+    // three facts that decide it down the right behind a hairline. Date, time
+    // and place only — the rest is a click away in Upcoming Programs.
+    document.getElementById('hcCourse').innerHTML = `
+      <div class="hc-course">
+        <p class="hc-eyebrow">Upcoming course</p>
+        <h2 class="hc-title">${d.heading}</h2>
+        <div class="hc-facts">
+          ${fact('i-calendar', 'Dates', when)}
+          ${fact('i-clock', 'Timing', d.time)}
+          ${fact('i-pin', 'Location', d.venue)}
+        </div>
+        ${blurb ? `<p class="hc-body">${blurb.desc}</p>` : ''}
+        <p class="hc-cta">
+          ${button}
+          <a href="#upcoming" class="hc-secondary">Explore all upcoming courses &rarr;</a>
+        </p>
+      </div>
+    `;
+    hcCourseSlide.hidden = false;
+  }
+
+  // Whatever slides are left after that — three normally, two if every batch
+  // has been and gone.
+  const hcLive = hcSlides.filter(sl => !sl.hidden);
+  const hcDots = document.getElementById('hcDots');
+  let hcIndex = 0;
+
+  hcLive.forEach((sl, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
+    dot.setAttribute('aria-label', `Show slide ${i + 1} of ${hcLive.length}`);
+    dot.addEventListener('click', () => hcMove(i));
+    hcDots.appendChild(dot);
+  });
+
+  function hcGo(i) {
+    hcIndex = (i + hcLive.length) % hcLive.length;
+    hcLive.forEach((sl, n) => {
+      const on = n === hcIndex;
+      sl.classList.toggle('is-active', on);
+      // inert as well as aria-hidden: a slide faded to nothing still holds
+      // links, and tabbing into one you cannot see is worse than not having
+      // the carousel at all.
+      sl.toggleAttribute('aria-hidden', !on);
+      sl.toggleAttribute('inert', !on);
+    });
+    [...hcDots.children].forEach((dot, n) =>
+      dot.classList.toggle('active', n === hcIndex));
+  }
+
+  // ---- Auto-advance ----
+  // Seven seconds a slide. It pauses while someone is actually using the
+  // carousel — pointer inside, focus inside, tab in the background — and picks
+  // up again afterwards. Every manual move restarts the clock rather than
+  // stopping it, so a slide never gets cut short right after you land on it.
+  // A visitor who has asked for reduced motion gets no movement at all; the
+  // arrows, dots and swipe still work for them.
+  //
+  // Note this is the one piece of self-starting motion on the site. The
+  // testimonial slider further down is manual by design; see the README.
+  const hcCalm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let hcTimer = null;
+  let hcHeld = 0; // pointer / focus / hidden tab can each hold it at once
+
+  function hcTick() {
+    clearInterval(hcTimer);
+    if (hcHeld > 0 || hcCalm.matches || hcLive.length < 2) return;
+    hcTimer = setInterval(() => hcGo(hcIndex + 1), 7000);
+  }
+  function hcHold() { hcHeld += 1; clearInterval(hcTimer); }
+  function hcRelease() { hcHeld = Math.max(0, hcHeld - 1); hcTick(); }
+  // A manual move resets the interval so the new slide gets its full seven
+  // seconds, instead of inheriting whatever was left of the last one's.
+  function hcMove(to) { hcGo(to); hcTick(); }
+
+  document.getElementById('hcPrev').addEventListener('click', () => hcMove(hcIndex - 1));
+  document.getElementById('hcNext').addEventListener('click', () => hcMove(hcIndex + 1));
+
+  const hcRoot = document.getElementById('home');
+  hcRoot.addEventListener('mouseenter', hcHold);
+  hcRoot.addEventListener('mouseleave', hcRelease);
+  hcRoot.addEventListener('focusin', hcHold);
+  hcRoot.addEventListener('focusout', hcRelease);
+  document.addEventListener('visibilitychange', () => document.hidden ? hcHold() : hcRelease());
+  hcCalm.addEventListener('change', hcTick);
+
+  hcRoot.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    hcMove(hcIndex + (e.key === 'ArrowRight' ? 1 : -1));
+  });
+
+  // ---- Swipe ----
+  // Nothing is preventDefault-ed: a finger moving mostly downwards has to keep
+  // scrolling the page, so only a clearly horizontal drag counts as a swipe.
+  let hcX = 0, hcY = 0, hcSwiping = false;
+  hcRoot.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    hcX = e.touches[0].clientX;
+    hcY = e.touches[0].clientY;
+    hcSwiping = true;
+    hcHold();
+  }, { passive: true });
+
+  hcRoot.addEventListener('touchend', (e) => {
+    if (!hcSwiping) return;
+    hcSwiping = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - hcX;
+    const dy = t.clientY - hcY;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      hcGo(hcIndex + (dx < 0 ? 1 : -1));
+    }
+    hcRelease();
+  }, { passive: true });
+
+  hcRoot.addEventListener('touchcancel', () => {
+    if (!hcSwiping) return;
+    hcSwiping = false;
+    hcRelease();
+  }, { passive: true });
+
+  if (hcLive.length < 2) document.querySelector('.hc-controls').hidden = true;
+  hcTick();
 
   // ---- Navbar background & active link ----
   // The navbar only gains a background on scroll; it no longer inverts its

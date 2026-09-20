@@ -107,6 +107,17 @@
         <path d="M8.65 10.65 15.35 6.85"/>
         <path d="M8.65 13.35l6.7 3.8"/>
       </symbol>
+      <!-- Contact block: Lucide's phone and mail, in the same open-stroke
+           idiom as the rest of the sprite. i-whatsapp below joins them there;
+           it is the brand mark and stays solid, because that glyph is only
+           recognisable as itself. -->
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24">
+        <rect x="2" y="4.5" width="20" height="15" rx="2.5"/>
+        <path d="m2.6 6.4 8.37 5.32a2 2 0 0 0 2.06 0L21.4 6.4"/>
+      </symbol>
       <symbol id="i-chevron" viewBox="0 0 24 24">
         <path d="m6.5 9.5 5.5 5.5 5.5-5.5"/>
       </symbol>
@@ -174,19 +185,73 @@
        actions. The hook is italic serif — the visitor's own words, same voice
        as the h1's highlight — so the stack alternates between two type voices,
        not five. -->
-  <section class="hero" id="home">
-    <div class="container hero-content">
-      <p class="hero-subtitle">Art of Living Happiness Center · Indiranagar</p>
-      <p class="hero-hook"><span>Tired, but can&rsquo;t sleep.</span> <span>Busy, but stuck.</span> <span>Relaxing, but still tense.</span></p>
-      <h1 class="hero-title">Bring your mind<br><span class="highlight">in sync with the body</span></h1>
-      <p class="hero-text">The body says rest; the mind doesn&rsquo;t listen. Breath is the one language both speak &mdash; and Sudarshan Kriya uses it to bring them back into harmony.</p>
-      <div class="hero-buttons">
-        <a href="#courses" class="btn btn-primary btn-lg">Explore Courses</a>
-        <a href="#contact" class="btn btn-outline btn-lg">Visit the Center</a>
+  <!-- Three slides stacked in one grid cell, so the tallest (the hero) sets the
+       height and a change of slide is a cross-fade rather than a reflow. The
+       Kriya and course slides are second presentations of content that still
+       lives further down the page; nothing was moved here. -->
+  <section class="hero-carousel" id="home"
+           aria-roledescription="carousel" aria-label="Highlights">
+    <div class="hc-track" id="hcTrack">
+
+      <!-- Slide 1 — the existing hero, exactly as it was. -->
+      <div class="hc-slide hc-slide-hero is-active" role="group" aria-roledescription="slide"
+           aria-label="1 of 3: Welcome">
+        <div class="hero">
+      <div class="container hero-content">
+        <p class="hero-subtitle">Art of Living Happiness Center · Indiranagar</p>
+        <p class="hero-hook"><span>Tired, but can&rsquo;t sleep.</span> <span>Busy, but stuck.</span> <span>Relaxing, but still tense.</span></p>
+        <h1 class="hero-title">Bring your mind<br><span class="highlight">in sync with the body</span></h1>
+        <p class="hero-text">The body says rest; the mind doesn&rsquo;t listen. Breath is the one language both speak &mdash; and Sudarshan Kriya uses it to bring them back into harmony.</p>
+        <div class="hero-buttons">
+          <a href="#courses" class="btn btn-primary btn-lg">Explore Courses</a>
+          <a href="#contact" class="btn btn-outline btn-lg">Visit the Center</a>
+        </div>
+        <!-- Real center numbers (years here, students taught, teachers) would
+             be stronger than anything on this page — .hero-stats / .stat /
+             .stat-number in style.css are still waiting for them. -->
       </div>
-      <!-- Real center numbers (years here, students taught, teachers) would
-           be stronger than anything on this page — .hero-stats / .stat /
-           .stat-number in style.css are still waiting for them. -->
+        </div>
+      </div>
+
+      <!-- Slide 2 — Why Sudarshan Kriya, in its own established type. Set as
+           <p>, not <h2>: the real heading is on the section further down and
+           the outline shouldn't carry it twice. -->
+      <div class="hc-slide hc-slide-kriya" role="group" aria-roledescription="slide"
+           aria-label="2 of 3: Why Sudarshan Kriya" aria-hidden="true" inert>
+        <div class="container hc-inner hc-inner-centred">
+          <p class="kriya-title">Why Sudarshan Kriya</p>
+          <p class="kriya-claim">Telling yourself to relax <em>never works</em>.</p>
+          <!-- One sentence per line, broken where the thought breaks rather
+               than wherever the column happens to run out. Carousel slide
+               only; the section further down still wraps on its own. -->
+          <p class="kriya-lead">When the mind won&rsquo;t stop racing, effort only adds noise.<br>Sudarshan Kriya works underneath the effort &mdash; in order.</p>
+          <p class="hc-note"><a href="#kriya" class="kriya-cta">See how it works &rarr;</a></p>
+        </div>
+      </div>
+
+      <!-- Slide 3 — the next batch, built in main.js from the same `upcoming`
+           list the Upcoming Programs section renders. Empty until then; if
+           there are no live batches the whole carousel drops to two slides. -->
+      <div class="hc-slide hc-slide-course" role="group" aria-roledescription="slide"
+           aria-label="3 of 3: Next program" aria-hidden="true" inert
+           id="hcCourseSlide" hidden>
+        <!-- The official lockup as a ground, not a stamp: scaled and set off to
+             the right of the copy, never recoloured, redrawn or stretched. -->
+        <img class="hc-watermark" src="img/aol-logo.svg" alt="" aria-hidden="true"
+             width="273" height="107">
+        <div class="container hc-inner" id="hcCourse"></div>
+      </div>
+
+    </div>
+
+    <div class="hc-controls">
+      <button type="button" class="hc-arrow" id="hcPrev" aria-label="Previous slide">
+        <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>
+      </button>
+      <div class="slider-dots" id="hcDots"></div>
+      <button type="button" class="hc-arrow hc-arrow-next" id="hcNext" aria-label="Next slide">
+        <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>
+      </button>
     </div>
   </section>
 
@@ -374,17 +439,39 @@
                pointed at the same Maps pin as the map card two blocks below
                it — three affordances for one link.
                What's left is two details and one map. -->
-          <dl class="contact-details">
-            <div>
-              <dt>Phone</dt>
-              <dd><a href="tel:+919986347648">+91 99863 47648</a></dd>
-              <dd><a href="tel:+919900490077">+91 99004 90077</a></dd>
-            </div>
-            <div>
-              <dt>Email</dt>
-              <dd><a href="mailto:programs.artofliving@gmail.com">programs.artofliving@gmail.com</a></dd>
-            </div>
-          </dl>
+          <!-- Icons carry the category, so the old "PHONE"/"EMAIL" labels are
+               gone from the page but not from the accessibility tree: each
+               block keeps a visually hidden one, and every link says what it
+               does as well as which number, because the phone and WhatsApp
+               columns repeat the same two numbers. -->
+          <ul class="contact-details">
+            <li class="contact-item">
+              <svg class="icon contact-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+              <div class="contact-values">
+                <span class="sr-only">Call us</span>
+                <a href="tel:+919986347648" aria-label="Call +91 99863 47648">+91 99863 47648</a>
+                <a href="tel:+919900490077" aria-label="Call +91 99004 90077">+91 99004 90077</a>
+              </div>
+            </li>
+            <li class="contact-item">
+              <svg class="icon contact-icon icon-solid" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              <div class="contact-values">
+                <span class="sr-only">Message us on WhatsApp</span>
+                <a href="https://wa.me/919986347648" target="_blank" rel="noopener"
+                   aria-label="Message +91 99863 47648 on WhatsApp">+91 99863 47648</a>
+                <a href="https://wa.me/919900490077" target="_blank" rel="noopener"
+                   aria-label="Message +91 99004 90077 on WhatsApp">+91 99004 90077</a>
+              </div>
+            </li>
+            <li class="contact-item contact-item-wide">
+              <svg class="icon contact-icon" aria-hidden="true"><use href="#i-mail"/></svg>
+              <div class="contact-values">
+                <span class="sr-only">Email us</span>
+                <a href="mailto:programs.artofliving@gmail.com"
+                   aria-label="Email programs.artofliving@gmail.com">programs.artofliving@gmail.com</a>
+              </div>
+            </li>
+          </ul>
           <!-- Static image, not a Google Maps iframe: an embed ships ~300KB and
                sets Google cookies for every visitor before anyone asks for a
                map. This is a 136KB picture stitched from OpenStreetMap tiles,

@@ -43,7 +43,10 @@ so the copied link points at that batch and the card it lands on marks itself
 with `:target`. The WhatsApp message is built fresh each time the menu opens
 and reads the email and phone numbers **out of the Get In Touch section's
 markup** — they are not repeated in `main.js`, so editing the contact block in
-`index.html` changes what gets shared. Copy link tries `navigator.clipboard`
+`index.html` changes what gets shared. It selects `#contact .contact-details a`
+and sorts by href prefix, so the WhatsApp links in that block (`https://wa.me/…`)
+are ignored and the two numbers are not listed twice. Keep that class and those
+prefixes if you rework the contact block. Copy link tries `navigator.clipboard`
 and falls back to the old textarea trick, which is what makes it work off
 `file://`, over plain http and in Safari.
 
@@ -99,6 +102,64 @@ its own — Why Sudarshan Kriya, Our Programs — keeps the heading above it lit
 which is what holds "About" active across the whole About page. Taking every
 section instead used to leave no link lit at all while you were in Kriya.
 
+## Hero carousel
+
+Three slides at the top of the home page, stacked in one grid cell so the
+tallest (the hero) sets the height and a change of slide is a cross-fade with
+no reflow. `#home` — what the nav links to — is the carousel section.
+
+Each slide carries its own ground, as a `::before` on the slide itself so it
+cross-fades with the copy instead of switching under it: the hero's warm and
+cool corners, then the sage side alone for the quiet argument, then the warm
+side a shade deeper where there is something to act on. Only the two existing
+accent tints are involved — what changes is which one leads. `.hero-carousel`
+is plain sand, which is what the two slides blend over mid-transition.
+
+The official lockup sits centred in slide 3 at **20%**, wider than the copy
+box so a good part of it falls outside the text columns and reads at full
+strength there. It is scaled and positioned only, never recoloured or redrawn.
+
+Three layers make that possible: the ground is the slide's `::before`, the
+logo is a child, a veil is the `::after`, and `.hc-inner` sits above all three.
+The veil is a soft ellipse of the slide's own sand, sized and centred on the
+copy box rather than the slide, so it lifts the ground exactly where the words
+are and leaves the emblem alone everywhere else.
+
+**20% is a ceiling the text sets, not a preference.** Over the lockup's dark
+wordmark with no veil, the clay eyebrow and the clay "explore" link fall to
+3.5:1 and even the body text to 4.4:1 — all under AA. With the veil, every
+pair passes, the tightest being the explore link at 4.90:1. Those figures are
+sampled from rendered pixels (screenshot the slide with `.hc-inner` hidden,
+decode the PNG, take the darkest background inside each text box) rather than
+calculated from assumptions. **If you raise the opacity, widen the logo or move
+the veil, re-measure the eyebrow and the explore link** — they are the two that
+break first.
+
+Slide 1 is the hero, markup unchanged. Slide 2 restates Why Sudarshan Kriya in
+that section's own type, as `<p class="kriya-title">` rather than a second
+`<h2>`, so the outline doesn't carry the heading twice. Slide 3 is the next
+batch, taken from `live[0]` — the same filtered, date-sorted list the Upcoming
+Programs section renders — with its blurb looked up from `courseCategories` by
+title, plus a secondary "Explore all upcoming courses" link to `#upcoming` —
+one featured course in the carousel, the full list one click away. Nothing is
+duplicated or hardcoded, and both original sections stay where they were.
+
+All three slides share one shell — a single `min-height` on `.hc-slide`, one
+set of type tokens on `.hero-carousel` (`--hc-title`, `--hc-body`,
+`--hc-eyebrow`, `--hc-gap`) and one CTA treatment. Change a token and all three
+follow. Slide 1 keeps the page's `<h1>` at display size; it is the landing
+headline and matching it to the other two would flatten the page.
+
+**Auto-advance is the one piece of self-starting motion on the site.** Seven
+seconds a slide. It pauses while someone is using the carousel — pointer
+inside, focus inside, tab in the background — and resumes afterwards; a manual
+move (arrow, dot, key or swipe) restarts the clock rather than stopping it, so
+a slide never gets cut short right after you land on it. A visitor who has
+asked for reduced motion gets no movement at all, and the controls still work.
+Inactive slides get `inert` as well as `aria-hidden`, so a faded-out slide's
+links can't be tabbed into. Swipes only count when clearly horizontal, and
+nothing is `preventDefault`-ed, so vertical scrolling is untouched.
+
 ## Why Sudarshan Kriya
 
 Three static cards, every description visible at once. **No JavaScript touches
@@ -146,8 +207,10 @@ because `.kriya-lead` shares its sizing rule with `.about-lead`.
   cards' Register button and card. A pill is a "buy now" shape and that is the
   only literal "buy now" on the page; everything else separates with a
   hairline. Don't spread either.
-- **Motion.** There is deliberately no scroll-reveal, no counting statistics, no
-  auto-advancing carousel. This is a page about not being agitated.
+- **Motion.** There is deliberately no scroll-reveal and no counting statistics.
+  The hero carousel is the one exception and was added on request against this
+  rule — see below. Everything else stays still. This is a page about not being
+  agitated.
 - **The logo** (`img/aol-logo.svg`) is the official asset. Don't recolour,
   redraw or stretch it; height is set in CSS and the width follows.
 - **The map** is a static image built from OpenStreetMap tiles, not a Google
