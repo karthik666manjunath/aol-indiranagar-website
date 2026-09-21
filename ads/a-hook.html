@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ad A — The hook</title>
+  <!-- ?size=feed (default) or ?size=story picks the canvas; see creative.css -->
+  <script>document.documentElement.className = new URLSearchParams(location.search).get('size') || 'feed';</script>
+  <link rel="stylesheet" href="creative.css">
+</head>
+<body>
+  <!-- Concept A: lead on the feeling, not the course. The three hero lines
+       from the homepage, in the visitor's own words, then the answer. -->
+  <main class="ad">
+    <img class="logo" src="../img/aol-logo.svg" alt="">
+
+    <div>
+      <p class="hook">
+        <span>Tired, but can&rsquo;t sleep.</span>
+        <span>Busy, but stuck.</span>
+        <span>Relaxing, but still tense.</span>
+      </p>
+      <p class="answer" style="margin-top:56px">Bring your mind<br><em>in sync with the body</em></p>
+    </div>
+
+    <p class="strip"><span>Happiness Program</span><span>Indiranagar</span><span>Fri&ndash;Sun evenings</span></p>
+  </main>
+</body>
+</html>

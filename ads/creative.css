@@ -1,0 +1,184 @@
+/* ============================================
+   Meta ad creatives — shared styles.
+
+   Same tokens and fonts as ../css/style.css, so an ad and the page it sends
+   people to look like the same thing. Two canvases: .feed (1080×1080) and
+   .story (1080×1920). Each HTML picks one from ?size= via a one-line script.
+
+   Story keeps the top 250px and bottom 340px empty: that's where Instagram
+   and Facebook draw the profile bar and the CTA/reply UI over the image.
+   ============================================ */
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 600;
+  src: url('../fonts/lora-var-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../fonts/lora-var-italic-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  src: url('../fonts/inter-var-latin.woff2') format('woff2');
+}
+
+:root {
+  --sand: #FAF7F2;
+  --line: #E4DDD2;
+  --ink: #2E2A26;
+  --ink-soft: #5C564E;
+  --clay: #A84812;
+  --sage: #3F5147;
+
+  --font-heading: 'Lora', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+
+  /* Type sizes for a 1080px-wide canvas. Story overrides a few below. */
+  --fs-hook: 58px;
+  --fs-answer: 78px;
+  --fs-h1: 84px;
+  --fs-date: 62px;
+  --fs-body: 30px;
+  --fs-strip: 23px;
+  --pad: 96px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { width: 1080px; }
+html.feed  { height: 1080px; }
+html.story { height: 1920px; }
+
+body {
+  height: 100%;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Three bands: logo, concept, strip. justify-content spreads them over
+   whatever height the canvas has, so one layout serves both sizes. */
+.ad {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px; /* bands never touch, even when the canvas is tight */
+  padding: var(--pad);
+}
+.story .ad { padding: 250px var(--pad) 340px; }
+
+/* Official logo, unaltered. Height set, width follows the 2.55:1 ratio.
+   align-self stops the flex column stretching it full-width (which centred
+   the artwork while every line of text sits on the left margin). */
+.logo { height: 84px; width: auto; display: block; align-self: flex-start; }
+
+/* ---- Shared type ---- */
+.hook {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-hook);
+  line-height: 1.25;
+  color: var(--ink-soft);
+}
+.hook span { display: block; }
+
+.answer, h1 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--fs-answer);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+h1 { font-size: var(--fs-h1); }
+.answer em, h1 em { color: var(--clay); font-style: italic; font-weight: 400; }
+
+.lead {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 780px;
+  text-wrap: pretty; /* no one-word last lines; Chromium rebalances the break */
+}
+
+/* Bottom strip: what / where / when, in the site's section-tag voice.
+   Items are spaced by gap rather than separator glyphs, so when the strip
+   wraps to two lines nothing dangles at a line end. */
+.strip {
+  font-size: var(--fs-strip);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 40px;
+}
+
+/* ---- Concept B: the breath, as a diagram ---- */
+.wave { width: 100%; height: auto; display: block; margin: 64px 0 48px; }
+/* The square canvas can't fit headline + full-width wave + lead + strip, so
+   the wave gives way: narrower and tighter, still left-aligned. */
+.feed .wave { width: 72%; margin: 40px 0 32px; }
+.feed { --fs-h1: 72px; }
+.wave path {
+  fill: none;
+  stroke: var(--sage);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- Concept C: dates as a hairline list, same shape as the site's
+   Upcoming rows ---- */
+.dates { list-style: none; border-top: 2px solid var(--line); }
+.dates li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 34px 0;
+  border-bottom: 2px solid var(--line);
+}
+.dates .d {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--fs-date);
+  line-height: 1;
+  white-space: nowrap;
+}
+.dates .t {
+  font-size: var(--fs-body);
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.eyebrow {
+  font-size: var(--fs-strip);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 28px;
+}
+
+/* Story has the same width but far more height: a little larger type and
+   looser gaps so the middle band doesn't float in empty sand. */
+.story {
+  --fs-hook: 64px;
+  --fs-answer: 88px;
+  --fs-h1: 96px;
+  --fs-date: 70px;
+  --fs-body: 34px;
+}
+.story .dates li { padding: 44px 0; }
+/* Wider measure at the larger story type, or B's lead orphans its last word. */
+.story .lead { max-width: 860px; }
