@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cta = d.ctaLabel || (u.register ? 'Register' : 'Enquire');
     const button = u.register
       ? `<a href="${u.register}" target="_blank" rel="noopener" class="btn btn-primary btn-register"
+            data-program="${d.heading}" data-when="${when}"
             aria-label="${cta} for ${d.heading}, ${when}">${cta}</a>`
       : `<a href="#contact" class="btn btn-primary btn-register reserve-btn" data-program="${u.title}"
             aria-label="${cta} about ${d.heading}, ${when}">${cta}</a>`;
@@ -190,6 +191,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // renders the same button for the next batch, and scoping this to the
   // section meant a click up there scrolled to an empty form.
   document.addEventListener('click', (e) => {
+    // Meta Pixel: the aolt.in registration form can't carry our pixel, so a
+    // tap on a Register link is the furthest step we can see — report it as
+    // a Lead so Ads Manager has something better than page views to optimise
+    // toward. Covers the cards and the hero carousel alike. fbq is the stub
+    // from the <head> snippet; if the pixel script never loaded the call just
+    // queues harmlessly.
+    const reg = e.target.closest('.btn-register:not(.reserve-btn)');
+    if (reg) {
+      if (window.fbq) fbq('track', 'Lead', { content_name: reg.dataset.program, content_category: reg.dataset.when });
+      return;
+    }
+
     const btn = e.target.closest('.reserve-btn');
     if (!btn) return;
     courseSelect.value = btn.dataset.program;
@@ -559,6 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const button = next.register
       ? `<a href="${next.register}" target="_blank" rel="noopener"
             class="btn btn-primary btn-register"
+            data-program="${d.heading}" data-when="${when}"
             aria-label="${cta} for ${d.heading}, ${when}">${cta}</a>`
       : `<a href="#contact" class="btn btn-primary btn-register reserve-btn"
             data-program="${next.title}"

@@ -4,9 +4,10 @@ Homepage for the Art of Living Happiness Center, Indiranagar, Bengaluru.
 
 ## Running it
 
-Open `index.html`. There is no build step, no dependencies, and no external
-requests — fonts, the logo, the map and the photograph are all served from this
-repo.
+Open `index.html`. There is no build step and no dependencies. Fonts, the
+logo, the map and the photograph are all served from this repo; the one
+third-party request is the Meta Pixel in each page's `<head>`, which lets Ads
+Manager count visits from the ads and, via `js/main.js`, taps on Register.
 
 ## Where things live
 
@@ -16,6 +17,7 @@ repo.
 | `js/main.js` | Behaviour only. |
 | `css/style.css` | Design tokens are at the top and are the whole system. |
 | `img/`, `fonts/` | Assets. |
+| `ads/` | Meta ad creatives. Three concepts as HTML on the site's tokens, `sh render.sh` turns them into 1:1 and 9:16 PNGs in `ads/out/`; `copy.md` has the matching ad text. `c-dates.html` names batch dates — edit and re-render when one passes. |
 
 `testimonials` in `data.js` is empty on purpose. While a list is empty its
 section — and every nav and footer link pointing at it — hides itself, so the
