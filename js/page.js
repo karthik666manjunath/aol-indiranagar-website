@@ -30,6 +30,32 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', () => setMenu(false));
   });
 
+  // ---- One-shot fade-up ----
+  // The only self-starting motion on a secondary page. It arms the hidden
+  // state itself rather than the stylesheet doing it, so the copy is visible
+  // unless this code is running and is about to animate it. A failsafe
+  // reveals anything still hidden a beat later, in case the observer never
+  // fires — invisible copy is a far worse outcome than a missing fade.
+  const fading = [...document.querySelectorAll('.gw-fade')];
+  const stillMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (fading.length && stillMotion && 'IntersectionObserver' in window) {
+    fading.forEach(el => el.classList.add('is-armed'));
+
+    const reveal = (el) => el.classList.add('is-in');
+    const seen = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        reveal(entry.target);
+        obs.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+
+    fading.forEach(el => seen.observe(el));
+    // Belt and braces: whatever has not been reached by now, show.
+    setTimeout(() => fading.forEach(reveal), 2000);
+  }
+
   // ---- Footer Year ----
   document.getElementById('year').textContent = new Date().getFullYear();
 

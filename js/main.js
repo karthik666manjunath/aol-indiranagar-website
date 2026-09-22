@@ -121,7 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const d = { ...window.SITE_DATA.batchDefaults, ...u };
     const when = dateRange(u);
     const id = cardId(u);
-    shareable.set(id, { heading: d.heading, when, time: d.time, venue: d.venue });
+    // The blurb comes from the matching course in courseCategories, the same
+    // lookup the carousel slide uses, so the description lives in one place.
+    const course = courseCategories
+      .flatMap(cat => cat.courses)
+      .find(c => c.title === u.title);
+    shareable.set(id, {
+      heading: d.heading, when, time: d.time, venue: d.venue,
+      desc: course ? course.desc : '',
+    });
 
     // btn-primary plus .btn-register: the card's call to action, styled where
     // the header's "Enrol Now" used to be defined.
@@ -345,23 +353,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return url.href;
   };
 
+  // Plain-text labels, no emoji. The calendar, clock and pin characters this
+  // used to carry are astral-plane codepoints, and they were arriving as
+  // question marks wherever something in the chain couldn't encode them.
+  // Nothing here goes above the basic multilingual plane; the dashes and the
+  // middle dot are the batch's own punctuation, not decoration.
   function shareMessage(id) {
     const c = shareable.get(id);
     const { emails, phones } = contactLines();
     const lines = [
-      c.heading,
-      `\u{1F4C5} ${c.when}`,
-      `\u{1F550} ${c.time}`,
-      `\u{1F4CD} ${c.venue}`,
+      `Program: ${c.heading}`,
+      `Date: ${c.when}`,
+      `Time: ${c.time}`,
+      `Location: ${c.venue}`,
     ];
+    if (c.desc) lines.push(`Details: ${c.desc}`);
     // Skip the whole block rather than send "For enquiries:" with nothing
     // under it, which is what would happen if the contact section changed.
     if (emails.length || phones.length) {
       lines.push('', 'For enquiries:');
-      emails.forEach(e => lines.push(`\u{1F4E7} ${e}`));
-      phones.forEach(p => lines.push(`\u{1F4DE} ${p}`));
+      emails.forEach(e => lines.push(`Email: ${e}`));
+      phones.forEach(p => lines.push(`Phone: ${p}`));
     }
-    lines.push('', `\u{1F517} ${cardUrl(id)}`);
+    lines.push('', `Register / Enquire: ${cardUrl(id)}`);
     return lines.join('\n');
   }
 
@@ -615,6 +629,10 @@ document.addEventListener('DOMContentLoaded', () => {
     hcDots.appendChild(dot);
   });
 
+  const hcRoot = document.getElementById('home');
+  const hcKind = (sl) => (sl.className.match(/hc-slide-([a-z]+)/) || [])[1];
+  if (hcLive.length) hcRoot.dataset.slide = hcKind(hcLive[0]) || '';
+
   function hcGo(i) {
     hcIndex = (i + hcLive.length) % hcLive.length;
     hcLive.forEach((sl, n) => {
@@ -628,6 +646,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     [...hcDots.children].forEach((dot, n) =>
       dot.classList.toggle('active', n === hcIndex));
+    // Name the active slide on the shell. The controls are overlaid on the
+    // slide now, and slide 4 is a photograph — this is what lets their colours
+    // follow the ground they happen to be sitting on.
+    const kind = hcKind(hcLive[hcIndex]);
+    if (kind) hcRoot.dataset.slide = kind;
   }
 
   // ---- Auto-advance ----
@@ -658,7 +681,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('hcPrev').addEventListener('click', () => hcMove(hcIndex - 1));
   document.getElementById('hcNext').addEventListener('click', () => hcMove(hcIndex + 1));
 
-  const hcRoot = document.getElementById('home');
   hcRoot.addEventListener('mouseenter', hcHold);
   hcRoot.addEventListener('mouseleave', hcRelease);
   hcRoot.addEventListener('focusin', hcHold);

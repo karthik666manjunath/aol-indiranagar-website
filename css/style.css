@@ -88,6 +88,17 @@
   --sun-deep: #D98F22;
 
   /* --- Type --- 6 steps */
+  /* The vertical rhythm between major sections. One number, so no section
+     invents its own gap: two adjacent sections put 2x this between blocks,
+     which is why it is well under the old 120px. Sections that are
+     deliberately tighter than this (.kriya, .gw-exp, .gw-faq's top) keep
+     their own smaller values — this is a ceiling, not a target. */
+  --section-y: 88px;
+
+  /* The fixed header's measured height. Anything that has to start below it
+     reads this rather than hard-coding a number that silently goes stale when
+     the logo size changes. It drops with .nav-logo .logo-mark at 768px. */
+  --nav-h: 81px;
   --font-heading: 'Lora', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --fs-xs: 0.78rem;
@@ -375,8 +386,7 @@ h1, h2, h3, h4 {
 .hero-carousel {
   position: relative;
   overflow: hidden;
-  /* 104px clears the 81px fixed header with air to spare. */
-  padding: 104px 0 46px;
+  padding: var(--nav-h) 0 0;
   /* The shared scale. Change these four and all three slides follow. */
   --hc-eyebrow: var(--fs-xs);
   --hc-title: clamp(2rem, 4.2vw, 2.75rem);
@@ -398,7 +408,8 @@ h1, h2, h3, h4 {
    it. As ::before it goes down first, the logo next, the copy last. */
 .hc-slide-hero::before,
 .hc-slide-kriya::before,
-.hc-slide-course::before {
+.hc-slide-course::before,
+.hc-slide-goa::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -411,19 +422,56 @@ h1, h2, h3, h4 {
     radial-gradient(560px 420px at 78% 18%, var(--clay-tint), transparent 70%),
     radial-gradient(640px 480px at 18% 85%, var(--sage-tint), transparent 70%);
 }
-/* Slide 2 — the sage side on its own. The calmest ground of the three, which
-   is the right one for the slide that argues for stillness. */
+/* Slide 2 — a warm sweep: deep terracotta in the outer corners, muted peach
+   through the middle distance, warm cream across the centre.
+
+   Every word on this slide is set in the terracotta family (--clay-deep,
+   --clay, --clay-muted), so the ground has to stay light exactly where the
+   copy is. --clay is the lightest of them and needs a background luminance of
+   about 0.76 to hold 4.5:1, which is roughly #F5DFD0 — so anything deeper than
+   a muted peach has to fall outside the copy box. The two terracotta washes
+   are therefore anchored off-canvas at opposite corners and are fully spent
+   before they reach the centre; the linear layer underneath is what the text
+   actually sits on. Percentage positions, so the sweep keeps its proportions
+   at any width. Re-measure if you deepen or re-aim any of the three. */
 .hc-slide-kriya::before {
   background:
-    radial-gradient(760px 520px at 50% 108%, var(--sage-tint), transparent 72%),
-    linear-gradient(180deg, var(--sand) 0%, #EFF3EE 100%);
+    radial-gradient(90% 130% at -10% 115%,
+      rgba(140, 56, 16, 0.62) 0%,
+      rgba(158, 68, 24, 0.26) 34%,
+      rgba(158, 68, 24, 0) 66%),
+    radial-gradient(80% 120% at 110% -15%,
+      rgba(168, 72, 18, 0.34) 0%,
+      rgba(168, 72, 18, 0.12) 36%,
+      rgba(168, 72, 18, 0) 68%),
+    linear-gradient(148deg,
+      #F7E2D0 0%,
+      #FBEFE4 42%,
+      #FDF7F1 72%,
+      var(--sand) 100%);
 }
 /* Slide 3 — the warm side, a shade deeper. Something to do, so the ground
    leans in. */
+/* Slide 3 — the warm side. With the lockup gone there is nothing behind the
+   copy to work around, so this is simply a light warm ground: a peach glow off
+   the top right, a soft sand settle bottom left, over a cream base. Every
+   layer stays light on purpose — the copy is dark ink and clay, and the whole
+   point of dropping the emblem was to stop trading text contrast for a
+   decorative mark. Percentages, so the sweep holds its proportions. */
 .hc-slide-course::before {
   background:
-    radial-gradient(720px 520px at 82% 24%, var(--clay-tint), transparent 74%),
-    linear-gradient(180deg, var(--sand) 0%, var(--sand-deep) 100%);
+    radial-gradient(70% 116% at 88% 8%,
+      rgba(250, 221, 197, 0.62) 0%,
+      rgba(250, 226, 205, 0.28) 46%,
+      rgba(250, 226, 205, 0) 74%),
+    radial-gradient(64% 104% at 6% 98%,
+      rgba(240, 233, 221, 0.80) 0%,
+      rgba(242, 237, 228, 0.30) 52%,
+      rgba(242, 237, 228, 0) 78%),
+    linear-gradient(162deg,
+      #FFFDFB 0%,
+      #FDF8F2 46%,
+      #F9F2E9 100%);
 }
 .hc-track { display: grid; position: relative; z-index: 1; }
 .hc-slide {
@@ -431,7 +479,9 @@ h1, h2, h3, h4 {
   grid-area: 1 / 1;
   display: grid;
   align-content: center;
-  min-height: clamp(360px, 42vh, 440px);
+  min-height: clamp(420px, 56vh, 560px);
+  /* The controls sit over this, so the copy stops short of them. */
+  padding-bottom: 46px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 500ms ease, visibility 0s linear 500ms;
@@ -447,53 +497,130 @@ h1, h2, h3, h4 {
 .hc-inner { position: relative; z-index: 1; width: 100%; max-width: 940px; }
 .hc-inner-centred { max-width: 820px; text-align: center; }
 
-/* Slide 1: the hero keeps its content and type, and gives up only the padding
-   and the wash, both of which the shell now provides. */
+/* Slide 1: the hero keeps its content, but not its standalone-page type
+   scale. On its own page it is the whole first screen; in the carousel it is
+   one slide of four, and at --fs-display it stood ~230px taller than the
+   others, which set the height for all of them. Here it reads off the same
+   --hc-* scale and rhythm as slides 2-4. */
 .hc-slide .hero { padding: 0; overflow: visible; }
+.hc-slide .hero .hero-subtitle { margin-bottom: var(--hc-gap); }
+.hc-slide .hero .hero-hook { font-size: var(--hc-body); margin-bottom: var(--hc-gap); }
+.hc-slide .hero .hero-title { font-size: var(--hc-title); margin-bottom: var(--hc-gap); }
+.hc-slide .hero .hero-text {
+  font-size: var(--hc-body);
+  line-height: 1.7;
+  margin-bottom: 26px;
+}
+/* Same CTA metrics as slides 3 and 4, and the same escape from the
+   full-bleed .btn-register gets inside a stacked card below 768px. */
+.hc-slide .hero-buttons .btn-register { width: auto; }
 
 /* Slide 2 watermark and the bloom that keeps the copy off it. */
-/* Centred, and deliberately wider than the copy box, so a good part of the
-   emblem falls outside the text columns and reads at full strength there.
-   Under the copy it is softened by the veil below — the two together are what
-   let it sit at 20% instead of the 8% a flat wash would force.
+/* ---- Slide 4: Goa teaser ----
+   The one slide that reverses the page's dark-on-light, because it is built to
+   sit on a photograph. Same shell, same height, same type tokens and the same
+   CTA as the other three — only the ink flips.
 
-   What this can be set to is decided by the veil, not by taste: over the
-   lockup's dark wordmark with no veil, the clay eyebrow and the clay
-   "explore" link fall to 3.5:1 and even the body text to 4.4:1, all under AA.
-   With the veil, 28% measures 4.73:1 at the tightest pair. Raise it further
-   and re-measure the eyebrow and the explore link — they break first. */
-.hc-watermark {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  left: 50%;
-  width: min(1080px, 92%);
-  height: auto;
-  transform: translate(-50%, -50%);
-  opacity: 0.28;
-  pointer-events: none;
-  user-select: none;
+   >> To add the photograph: drop it at img/goa-getaway.webp and set
+   >>   --hc-goa-image: url('../img/goa-getaway.webp');
+   >> on .hc-slide-goa below. That is the whole change. Until then the wash
+   >> underneath stands in for it: warm horizon over deep green, from the
+   >> site's own sage and clay, so the slide reads as intentional rather than
+   >> broken — but it is a stand-in, not the tropical image this wants.
+   ---- */
+.hc-slide-goa {
+  --hc-goa-image: url('../img/goa-getaway.webp');
 }
-/* Painted after the logo and before .hc-inner — the reason the ground is a
-   ::before and this is an ::after. Shaped to the copy box rather than the
-   slide, so it lifts the ground exactly where the words are and leaves the
-   emblem alone everywhere else. Same sand the slide's gradient is built from,
-   so it reads as ground rather than as a panel. */
-.hc-slide-course::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  /* Sized and centred on the copy box, not the slide: the eyebrow sits near
-     its top edge and the "explore" link near its bottom, and both are clay on
-     a light ground, which is the tightest pair here. */
-  background: radial-gradient(880px 330px at 50% 49%,
-    rgba(249, 246, 240, 0.95) 0%,
-    rgba(249, 246, 240, 0.9) 46%,
-    rgba(249, 246, 240, 0.42) 76%,
-    rgba(249, 246, 240, 0) 100%);
+.hc-slide-goa::before {
+  background-image:
+    /* Scrim in two parts, shaped to the copy rather than laid over the whole
+       frame — a column down the middle where the words are, and a light wash
+       everywhere else. The photograph stays a photograph at the edges and
+       still guarantees contrast under the text.
+
+       It is sized for the worst case, not for the stand-in below: against a
+       white beach the pair of them composite to about 78% alpha where the
+       copy sits, which holds the smallest text near 8:1. A single top-to-
+       bottom gradient could not do that without flattening the whole image —
+       it left the eyebrow at 1.85:1 over bright sand. */
+    radial-gradient(ellipse 52% 86% at 30% 46%,
+      rgba(22, 16, 11, 0.68) 0%,
+      rgba(22, 16, 11, 0.60) 52%,
+      rgba(22, 16, 11, 0.10) 100%),
+    linear-gradient(180deg,
+      rgba(22, 16, 11, 0.11) 0%,
+      rgba(22, 16, 11, 0.18) 55%,
+      rgba(22, 16, 11, 0.29) 100%),
+    var(--hc-goa-image),
+    /* Stand-in until the photograph lands: a sunrise over water, read top to
+       bottom — night sky, the glow before the sun, the sun's band on the
+       horizon, lit water, then shore. Abstract on purpose; it is holding a
+       place, not pretending to be a photograph. */
+    radial-gradient(620px 300px at 50% 47%, rgba(255, 214, 148, 0.85), transparent 70%),
+    linear-gradient(180deg,
+      #24324B 0%,
+      #4E4A63 20%,
+      #9A6C5C 36%,
+      #C98A55 46%,
+      #A87A5C 56%,
+      #5E5448 74%,
+      #33302A 100%);
+  background-size: cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, center;
+  background-repeat: no-repeat;
 }
+/* Left, not centred: the open water is on that side of the frame, and the sun
+   and the figures are on the other. Keeping the copy off them is the whole
+   reason the band was cropped the way it was. */
+.hc-goa {
+  max-width: 940px;
+  text-align: left;
+}
+.hc-goa > * { color: var(--paper); max-width: 30rem; }
+.hc-goa-eyebrow {
+  font-size: var(--hc-eyebrow);
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--clay-tint);
+  margin-bottom: var(--hc-gap);
+}
+.hc-goa-title {
+  font-family: var(--font-heading);
+  font-size: var(--hc-title);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+}
+/* Second-strongest thing on the slide, after the name. */
+.hc-goa-where {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hc-goa-strands {
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 30rem;
+  margin: 0 0 22px;
+}
+.hc-goa-save { font-size: var(--fs-md); font-weight: 600; margin-bottom: 4px; }
+.hc-goa-soon {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 24px;
+}
+/* The same button as everywhere else — it carries its own colour, so it reads
+   the same against a photograph as it does against sand. align-items as well
+   as justify-content: the stacked-CTA rule at 768px turns .hc-cta into a
+   left-aligned column for slide 3, and this slide is centred. */
+.hc-goa-cta { justify-content: flex-start; align-items: center; }
 
 /* ---- The shared scale, used by slides 2 and 3 ---- */
 .hc-eyebrow,
@@ -580,9 +707,14 @@ h1, h2, h3, h4 {
 /* Controls in flow, under the slide: absolute they had to be kept clear of
    the copy, and the padding that took is exactly what this pass removes. */
 .hc-controls {
-  position: relative;
-  z-index: 1;
-  margin-top: 26px;
+  /* Overlaid on the foot of the slide rather than sitting under it. In flow
+     they rendered on the shell's own sand, below every slide's ground, which
+     is what made them read as a separate strip. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -602,6 +734,15 @@ h1, h2, h3, h4 {
   transition: var(--transition);
 }
 .hc-arrow:hover { color: var(--clay); background: var(--clay-tint); }
+/* Slide 4 is the only dark ground in the carousel, and the controls sit on it
+   now that they are overlaid. Light marks there, dark marks everywhere else. */
+.hero-carousel[data-slide="goa"] .hc-arrow { color: rgba(255, 255, 255, 0.92); }
+.hero-carousel[data-slide="goa"] .hc-arrow:hover {
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.18);
+}
+.hero-carousel[data-slide="goa"] .slider-dot::before { background: rgba(255, 255, 255, 0.55); }
+.hero-carousel[data-slide="goa"] .slider-dot.active::before { background: var(--paper); }
 .hc-arrow .icon { transform: rotate(90deg); }
 .hc-arrow-next .icon { transform: rotate(-90deg); }
 
@@ -614,7 +755,14 @@ h1, h2, h3, h4 {
 .hero {
   position: relative;
   text-align: center;
+  /* A standalone .hero (spine-care.html) has no carousel wrapper to supply
+     the offset, so it carries the same values itself — otherwise it starts at
+     y=0 and the 81px fixed header sits on top of the eyebrow. The homepage's
+     .hero is nested in .hero-carousel, which already pads it, so that one
+     zeroes this out below. */
+  padding: 104px 0 46px;
 }
+.hero-carousel .hero { padding: 0; }
 .hero-content { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
 /* The visitor's own words, in the same italic serif voice as the h1's
    highlight — hook and headline read as one problem/answer unit. */
@@ -703,7 +851,7 @@ h1, h2, h3, h4 {
 }
 
 /* ---- Sections ---- */
-.section { padding: 120px 0; }
+.section { padding: var(--section-y) 0; }
 .section-header {
   max-width: 620px;
   margin: 0 auto 72px;
@@ -1431,7 +1579,7 @@ h1, h2, h3, h4 {
    The one saturated moment on the page. Flat colour, no gradient. */
 .cta-banner {
   background: var(--clay);
-  padding: 110px 0;
+  padding: var(--section-y) 0;
   text-align: center;
 }
 .cta-content h2 {
@@ -1659,6 +1807,300 @@ h1, h2, h3, h4 {
   font-size: var(--fs-xs);
 }
 
+/* ================================================================
+   The Happiness Getaway (happiness-getaway.html)
+   Editorial, not a brochure: two full-bleed photographic bands with
+   everything else set on the page's own sand, so the images carry the
+   mood and the type carries the argument. Every token, button and
+   hairline here is the site's; nothing new was invented for this page.
+   ================================================================ */
+
+/* ---- Hero ----
+   The same photograph as the homepage carousel's fourth slide, on purpose —
+   the carousel is the teaser and this is where it opens out. Taller and far
+   more spacious, so it reads as a page rather than a panel, and the scrim is
+   shaped to the copy exactly as it is there. */
+.gw-hero {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: min(88vh, 760px);
+  padding: 132px 0 84px;
+  overflow: hidden;
+  --gw-hero-image: url('../img/goa-getaway.webp');
+}
+.gw-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 56% 88% at 28% 50%,
+      rgba(22, 16, 11, 0.74) 0%,
+      rgba(22, 16, 11, 0.66) 52%,
+      rgba(22, 16, 11, 0.12) 100%),
+    linear-gradient(180deg,
+      rgba(22, 16, 11, 0.20) 0%,
+      rgba(22, 16, 11, 0.18) 55%,
+      rgba(22, 16, 11, 0.32) 100%),
+    var(--gw-hero-image);
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+}
+/* width: 100% because .container carries margin: 0 auto, and an auto margin
+   on a grid item turns off stretch — without this the hero copy shrank to
+   fit its own text and drifted to the middle of the frame, away from the
+   scrim built for it. */
+.gw-hero-inner { position: relative; z-index: 1; width: 100%; }
+.gw-hero-inner > * { color: var(--paper); max-width: 34rem; }
+
+.gw-eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--clay-tint);
+  margin-bottom: 18px;
+}
+.gw-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+}
+.gw-where {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.gw-lede {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-xl);
+  line-height: 1.35;
+  margin-bottom: 18px;
+}
+.gw-strands { font-size: var(--fs-sm); color: rgba(255,255,255,0.84); margin-bottom: 6px; }
+.gw-hours { font-size: var(--fs-sm); color: rgba(255,255,255,0.84); margin-bottom: 30px; }
+
+.gw-cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-bottom: 34px;
+}
+.gw-cta .btn-register { width: auto; }
+.gw-soon {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.8);
+}
+
+/* Organizer line: the lockup small, on its own pale plate so the dark
+   wordmark survives a photograph, with the attribution beside it. */
+/* ---- Shared section furniture ---- */
+.gw-head { max-width: 760px; margin: 0 auto 52px; text-align: center; }
+.gw-h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+/* ---- The experience ----
+   One section carrying the whole middle of the page. The sky is the ground
+   for all of it: the heading and proposition sit straight on it, and the four
+   blocks sit on it as a single frosted panel. The wash lifts the photo rather
+   than darkening it, because the type is the page's usual dark ink. */
+.gw-exp {
+  /* Tight enough that the whole section clears a 720px laptop viewport. */
+  padding: 64px 0;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(250,247,242,0.52), rgba(250,247,242,0.66)),
+              url('../img/goa-sky.webp') center / cover no-repeat;
+}
+.gw-exp-head { max-width: 760px; margin: 0 auto 32px; }
+.gw-exp .gw-h2 { margin-bottom: 12px; }
+/* Set in caps, so it needs positive tracking where .gw-h2 has -0.3px, and a
+   step down in size — caps at the full .gw-h2 scale overpowers the section. */
+.gw-caps-h {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: clamp(1.5rem, 3.4vw, 2.375rem);
+}
+
+/* A rhythm line, not a list: three words, wide tracking, no bullets. */
+.gw-rhythm {
+  margin-bottom: 20px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  /* --clay-deep, not --clay: at 13px over the brightest part of the cloud
+     photo --clay measured 4.55:1, a hair over the AA floor. This clears it. */
+  color: var(--clay-deep);
+}
+
+.gw-prop {
+  /* Wide enough that each of the three lines holds on one line at desktop —
+     the <br>s do the breaking, not the wrap. */
+  max-width: 58ch;
+  margin: 0 auto;
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.gw-prop p { margin: 0; }
+/* --clay-deep, like the rhythm line: this sits straight on the photo, where
+   --clay measured 4.39:1 at 22px and missed AA. On the frosted panel below,
+   where the ground is near-opaque, plain --clay is still fine. */
+.gw-prop em { font-style: normal; color: var(--clay-deep); }
+
+/* The four blocks. One frosted panel on the sky, not four cards on a page:
+   a single translucent surface, hairlines between the cells, and the photo
+   reading through it. The dividers are inset borders rather than grid gaps
+   so no sky shows through the middle of the panel. */
+.gw-gains {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 940px;
+  margin: 0 auto;
+  text-align: left;
+  list-style: none;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: rgba(252, 250, 246, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  backdrop-filter: blur(14px) saturate(115%);
+}
+/* Without backdrop-filter the panel is just a flat translucent sheet, which
+   over a photo goes muddy — so make it near-opaque instead. */
+@supports not (backdrop-filter: blur(14px)) {
+  .gw-gains { background: rgba(252, 250, 246, 0.95); }
+}
+.gw-gains li { padding: 22px 26px; }
+.gw-gains li:nth-child(odd) { border-right: 1px solid rgba(139, 122, 102, 0.20); }
+.gw-gains li:nth-child(-n+2) { border-bottom: 1px solid rgba(139, 122, 102, 0.20); }
+.gw-gains h3 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--clay);
+  margin-bottom: 5px;
+}
+/* 16px, not the 14.4px the rest of the page uses for secondary copy: this is
+   the one place a visitor actually reads to decide. */
+.gw-gains p { font-size: var(--fs-base); line-height: 1.6; }
+
+/* The one moving thing on this page, and it only ever runs once per element.
+   Visible by default on purpose: the hidden state is armed by page.js and
+   only when it is actually going to animate. No script, a browser without
+   IntersectionObserver, an error earlier in the file, reduced motion — in
+   every one of those the copy is simply there. Never hide content behind a
+   callback that has to fire. */
+.gw-fade.is-armed {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+.gw-fade.is-armed.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .gw-fade.is-armed { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---- Closing ----
+   A different crop of the same frame: tight on the sun and the water, far
+   wider than the hero band, so the two don't read as the same picture. */
+.gw-close {
+  position: relative;
+  overflow: hidden;
+  padding: var(--section-y) 0;
+}
+.gw-close::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 62% 86% at 50% 50%,
+      rgba(22, 16, 11, 0.70) 0%,
+      rgba(22, 16, 11, 0.62) 54%,
+      rgba(22, 16, 11, 0.16) 100%),
+    linear-gradient(180deg,
+      rgba(22, 16, 11, 0.16) 0%,
+      rgba(22, 16, 11, 0.22) 100%),
+    url('../img/goa-horizon.webp');
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+}
+.gw-close-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  text-align: center;
+}
+.gw-close-inner > * { color: var(--paper); }
+.gw-close-copy { font-size: var(--fs-md); color: rgba(255,255,255,0.88); margin-bottom: 36px; }
+.gw-close .gw-cta { justify-content: center; margin-bottom: 0; }
+
+/* ---- FAQ ----
+   <details>/<summary>, so it opens without a line of script and still works
+   if JavaScript never arrives. */
+.gw-faq { background: var(--sand); }
+/* The global .section 120px leaves the FAQ floating away from the closing
+   band. 64px matches the experience section above it. */
+.gw-faq { padding-top: 64px; }
+.gw-faq .gw-head { margin-bottom: 32px; }
+/* A step below the experience heading rather than above it: this one labels a
+   reference section, it is not the page making a statement. */
+.gw-faq .gw-h2 { font-size: clamp(1.5rem, 2.4vw, 1.875rem); }
+.gw-accordion {
+  max-width: 760px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+.gw-q { border-bottom: 1px solid var(--line); }
+.gw-q summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 19px 4px;
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  transition: var(--transition);
+}
+.gw-q summary::-webkit-details-marker { display: none; }
+.gw-q summary::after {
+  content: '+';
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--clay);
+  flex-shrink: 0;
+}
+.gw-q[open] summary::after { content: '\2013'; }
+.gw-q summary:hover { color: var(--clay); }
+.gw-a { padding: 0 4px 22px; font-size: var(--fs-sm); max-width: 62ch; }
+.gw-a a { color: var(--clay); font-weight: 600; border-bottom: 1px solid currentColor; }
+
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1679,11 +2121,17 @@ h1, h2, h3, h4 {
    overlapped instead: "INDIRANAGAR" sat underneath "Home", and "Enrol Now"
    broke onto two lines. */
 @media (max-width: 1000px) {
+  :root { --section-y: 72px; }
+  .gw-exp { padding: 56px 0; }
+  .gw-exp-head { margin-bottom: 28px; }
+  .gw-gains li { padding: 20px 22px; }
   .about-grid { grid-template-columns: 1fr; gap: 48px; }
   .about-media { order: -1; }
   .contact-grid { grid-template-columns: 1fr; gap: 56px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .hero-carousel { padding: 92px 0 40px; }
+  .hero-carousel { padding: var(--nav-h) 0 0; }
+  .hero { padding: 92px 0 40px; }
+  .hero-carousel .hero { padding: 0; }
   /* Description drops under the title rather than beside it, staying aligned
      to the text column so the icon keeps its own gutter. Four columns get
      cramped below this width. */
@@ -1719,7 +2167,41 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
-  .section { padding: 80px 0; }
+  :root { --section-y: 56px; }
+  /* Getaway page, designed for the phone rather than shrunk to it: the hero
+     takes the portrait crop, the three-across grids become one column, and
+     the two photographic bands lose height so the page stays short. */
+  .gw-hero {
+    --gw-hero-image: url('../img/goa-getaway-portrait.webp');
+    min-height: min(84vh, 620px);
+    padding: 112px 0 64px;
+  }
+  .gw-hero::before {
+    background-image:
+      radial-gradient(ellipse 104% 78% at 46% 50%,
+        rgba(22, 16, 11, 0.76) 0%,
+        rgba(22, 16, 11, 0.68) 58%,
+        rgba(22, 16, 11, 0.2) 100%),
+      linear-gradient(180deg,
+        rgba(22, 16, 11, 0.16) 0%,
+        rgba(22, 16, 11, 0.2) 55%,
+        rgba(22, 16, 11, 0.34) 100%),
+      var(--gw-hero-image);
+  }
+  .gw-hero-inner > * { max-width: none; }
+  .gw-head { margin-bottom: 36px; }
+  .gw-faq { padding-top: 48px; }
+  .gw-faq .gw-head { margin-bottom: 24px; }
+  .gw-exp { padding: 48px 0; }
+  .gw-exp-head { margin-bottom: 24px; }
+  .gw-exp .gw-h2 { margin-bottom: 10px; }
+  .gw-rhythm { margin-bottom: 16px; }
+  .gw-prop { font-size: var(--fs-md); }
+  .gw-gains { grid-template-columns: 1fr; }
+  .gw-gains li { padding: 18px 20px; }
+  /* Single column, so every rule is a horizontal one between neighbours. */
+  .gw-gains li:nth-child(odd) { border-right: 0; }
+  .gw-gains li:nth-child(-n+3) { border-bottom: 1px solid rgba(139, 122, 102, 0.20); }
   .section-header { margin-bottom: 52px; }
   /* one column, and the subtitle drops below the title */
   .section-header.align-left { grid-template-columns: 1fr; gap: 14px; margin-bottom: 44px; }
@@ -1735,6 +2217,8 @@ h1, h2, h3, h4 {
   .kriya-step { padding: 18px 20px; }
   .form-row { grid-template-columns: 1fr; }
   .nav-logo .logo-mark { height: 2.2rem; }
+  /* Logo drops to 2.2rem, so the fixed header measures 68px from here down. */
+  :root { --nav-h: 68px; }
   .logo-text {
     margin-left: 12px;
     padding-left: 12px;
@@ -1742,7 +2226,27 @@ h1, h2, h3, h4 {
   }
   .nav-container { gap: 14px; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
-  .hero-carousel { padding: 84px 0 34px; }
+  .hero-carousel { padding: var(--nav-h) 0 0; }
+  /* The copy box spans nearly the full width here, so the corner washes reach
+     it. Same sweep, pulled back: at full strength the claim measured 4.47:1,
+     which clears AA as large text but not the 4.5 floor the rest of the site
+     keeps. */
+  .hc-slide-kriya::before {
+    background:
+      radial-gradient(95% 125% at -12% 118%,
+        rgba(140, 56, 16, 0.40) 0%,
+        rgba(158, 68, 24, 0.15) 32%,
+        rgba(158, 68, 24, 0) 62%),
+      radial-gradient(85% 115% at 112% -18%,
+        rgba(168, 72, 18, 0.20) 0%,
+        rgba(168, 72, 18, 0) 62%),
+      linear-gradient(158deg,
+        #F9E9DC 0%,
+        #FCF2EA 45%,
+        var(--sand) 100%);
+  }
+  .hero { padding: 84px 0 34px; }
+  .hero-carousel .hero { padding: 0; }
   /* Slide 3's two columns become one, in source order: eyebrow, title, facts,
      description, CTA. The hairline turns into a rule above the facts. */
   .hc-course { grid-template-columns: 1fr; row-gap: 0; }
@@ -1754,17 +2258,33 @@ h1, h2, h3, h4 {
     border-left: none;
     border-top: 1px solid var(--line);
   }
-  /* Still centred; smaller, but still wider than the stacked copy so the
-     emblem's edges stay clear of it. */
-  .hc-watermark { width: min(620px, 118%); }
-  .hc-slide-course::after {
-    background: radial-gradient(330px 340px at 50% 50%,
-      rgba(249, 246, 240, 0.95) 0%,
-      rgba(249, 246, 240, 0.88) 45%,
-      rgba(249, 246, 240, 0.36) 76%,
-      rgba(249, 246, 240, 0) 100%);
-  }
   .hc-cta { align-items: flex-start; flex-direction: column; gap: 16px; }
+  /* Slide 3 stacks its two CTAs to the left; slide 4 has one, centred. This
+     has to sit here rather than with the rest of the Goa rules — same
+     specificity as the line above, so source order decides. */
+  .hc-goa-cta { align-items: flex-start; }
+  /* A portrait crop of the same frame. The wide band is 2.3:1 and a phone
+     slide is about 0.56:1, so `cover` was throwing away nearly all of it and
+     leaving a narrow vertical strip. This one is cut to roughly the phone's
+     own proportions, so the whole scene survives. */
+  .hc-slide-goa { --hc-goa-image: url('../img/goa-getaway-portrait.webp'); }
+  /* Stacked, the copy runs nearly the full width, so the scrim column has to
+     cover nearly the full width with it. */
+  .hc-slide-goa::before {
+    background-image:
+      radial-gradient(ellipse 100% 78% at 44% 48%,
+        rgba(22, 16, 11, 0.73) 0%,
+        rgba(22, 16, 11, 0.66) 58%,
+        rgba(22, 16, 11, 0.15) 100%),
+      linear-gradient(180deg,
+        rgba(22, 16, 11, 0.13) 0%,
+        rgba(22, 16, 11, 0.20) 55%,
+        rgba(22, 16, 11, 0.32) 100%),
+      var(--hc-goa-image),
+      radial-gradient(420px 220px at 50% 47%, rgba(255, 214, 148, 0.85), transparent 70%),
+      linear-gradient(180deg, #24324B 0%, #4E4A63 20%, #9A6C5C 36%, #C98A55 46%,
+        #A87A5C 56%, #5E5448 74%, #33302A 100%);
+  }
   .hc-controls { margin-top: 20px; }
   .hero-stats { margin-top: 56px; }
   .stat { padding: 20px 8px; }
