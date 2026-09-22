@@ -205,7 +205,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // toward. Covers the cards and the hero carousel alike. fbq is the stub
     // from the <head> snippet; if the pixel script never loaded the call just
     // queues harmlessly.
-    const reg = e.target.closest('.btn-register:not(.reserve-btn)');
+    // [data-when], not :not(.reserve-btn): .btn-register is the carousel's CTA
+    // style too, so slide 1's "Explore Courses"/"Visit the Center" and slide
+    // 4's "Get in Touch" — all internal anchors — were reporting Leads. Only
+    // the generated aolt.in links carry data-when, and they are the ones that
+    // actually leave the site for a registration form.
+    const reg = e.target.closest('.btn-register[data-when]');
     if (reg) {
       if (window.fbq) fbq('track', 'Lead', { content_name: reg.dataset.program, content_category: reg.dataset.when });
       return;
