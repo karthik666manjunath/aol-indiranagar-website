@@ -390,6 +390,53 @@ new one. **Re-measure contrast after any swap** — the scrims are tuned to thes
 crops, not generically safe. The tightest pair on this page today is the
 `--clay` block titles on the frosted panel at 5.37:1.
 
+## The Spine Care page
+
+Its hero and the homepage's read from one scale. The four `--hc-*` tokens live
+on `:root` and `.hero …` rules apply to both, because when they were scoped
+`.hc-slide .hero` the standalone hero silently kept the old page-level scale —
+a 68px title against the homepage's 44px, `.btn-lg` against `.btn-register`,
+and a hero more than twice as tall. The band (`clamp(420px, 56vh, 560px)`) and
+the two-corner wash match the carousel's too. **Clearance under the fixed
+header is explicit padding, not centring**: this page's copy is longer than the
+homepage's and fills the band, so centring alone left the first line flush
+against the header.
+
+**"How It Helps" is scoped to `#mechanism`, and is built to fit one laptop
+screen.** It measures 584px at 1440/1366/1280 and 596px at 1024 — verify that
+if you change it, because it started at 867px and the copy has not changed.
+Three things got it there, in order of how much they gave back:
+
+- The three steps sit **across one row**, not stacked. Stacked they were 363px
+  on their own; in a row they are one card tall. The number rides on the
+  title's line rather than taking one of its own, and the description spans
+  both columns so it keeps the card's full measure.
+- `.kriya-head` is capped at 760px for the homepage's Kriya section, which
+  wrapped this heading onto a second line. Widened to 1040px here it fits on
+  one, worth ~55px. The lead keeps its own 68ch measure below it.
+- `.kriya` sets 56px section padding; this one takes 48px.
+
+The number column is a fixed `1.6rem` and the title reserves `2.6em`: Lora's
+oldstyle figures make 01/02/03 different widths, and one of the three titles
+wraps where the others don't, so without both the copy started at a different
+x and y per card. `.kriya-step`, `.kriya-num` and `.kriya-note` are shared with
+index.html's Why Sudarshan Kriya, which keeps its own treatment — everything
+here is behind `#mechanism` for that reason.
+
+The spine drawing that used to sit in this section is gone. It was an
+`i-spinecurve` `<svg>` with no `class="icon"`, so it never picked up
+`fill: none; stroke: currentColor` and rendered as a solid black blob. **Any
+`<svg><use>` on this site needs `class="icon"`** or it fills black.
+
+**"Who It's For" is scoped to `.who`.** `index.html`'s "Why Us" uses the same
+`.why-grid` / `.why-card` / `.why-icon` classes and keeps its four-across,
+icon-on-top treatment — check both pages if you touch those rules. Here the
+four sit two-up with the icon beside the copy, which roughly doubles the line
+length and lets the body go to 16px. Note the card has **three** children, so
+the icon is placed explicitly (`grid-row: 1 / span 2`, copy in column two);
+left to auto-placement the paragraph lands under the icon and the heading
+collapses to min-content.
+
 ## Conventions worth knowing before editing
 
 - **Contrast.** Every foreground/background pair was checked against WCAG AA;
