@@ -56,6 +56,50 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => fading.forEach(reveal), 2000);
   }
 
+  // ---- Contact form ----
+  // happiness-getaway.html carries a copy of the homepage's Get in Touch
+  // section. main.js owns that form on the homepage, but it also needs
+  // data.js and homepage-only elements and would throw here, so the handler
+  // is repeated rather than shared. Same behaviour: hand the enquiry to the
+  // visitor's mail client, because there is no backend. Guarded, so pages
+  // without the form (spine-care.html) are unaffected.
+  const form = document.getElementById('contactForm');
+  const formNote = document.getElementById('formNote');
+
+  if (form && formNote) {
+    const CENTER_EMAIL = 'programs.artofliving@gmail.com';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = form.elements;
+      const name = f.name.value.trim();
+      const phone = f.phone.value.trim();
+
+      if (!name || !phone) {
+        formNote.textContent = 'Please fill in your name and phone number.';
+        formNote.className = 'form-note error';
+        return;
+      }
+
+      const body = [
+        `Name: ${name}`,
+        `Phone: ${phone}`,
+        `Email: ${f.email.value.trim() || '—'}`,
+        `Enquiry about: ${f.course.value || '—'}`,
+        '',
+        f.message.value.trim(),
+      ].join('\n');
+
+      window.location.href = `mailto:${CENTER_EMAIL}`
+        + `?subject=${encodeURIComponent(`Happiness Getaway enquiry from ${name}`)}`
+        + `&body=${encodeURIComponent(body)}`;
+
+      formNote.textContent = 'Opening your email app to send the enquiry.';
+      formNote.className = 'form-note success';
+      setTimeout(() => { formNote.textContent = ''; }, 8000);
+    });
+  }
+
   // ---- Footer Year ----
   document.getElementById('year').textContent = new Date().getFullYear();
 

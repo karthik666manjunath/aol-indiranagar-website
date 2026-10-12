@@ -1982,7 +1982,16 @@ h1, h2, h3, h4 {
   position: relative;
   display: grid;
   align-content: center;
-  min-height: min(88vh, 760px);
+  /* A deliberate exception to the "no forced 100svh" rule the .hero comment
+     above sets out: this is a full-bleed photographic hero and was asked to
+     own the first screen. The rule still holds for .hero.
+     Fill the first screen. min(88vh, 760px) capped the band at 669px on a
+     760px window, so a strip of the section below always showed beneath it.
+     svh is the small-viewport unit: on a phone it uses the height with the
+     browser chrome visible, so the hero does not jump as that chrome
+     retracts. vh first, as the fallback for anything without svh. */
+  min-height: 100vh;
+  min-height: 100svh;
   padding: 132px 0 84px;
   overflow: hidden;
   --gw-hero-image: url('../img/goa-getaway.webp');
@@ -2054,6 +2063,21 @@ h1, h2, h3, h4 {
   margin-bottom: 34px;
 }
 .gw-cta .btn-register { width: auto; }
+/* The hero's secondary sits on a photograph, so .btn-outline's --line edge
+   and --ink label would both disappear into it. White at 65% gives the
+   boundary the 3:1 it needs without competing with the solid primary beside
+   it; hover fills white and flips the label to clay, matching how the
+   outline button in the detail panels behaves. */
+.gw-hero .btn-outline {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.65);
+  color: var(--paper);
+}
+.gw-hero .btn-outline:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--clay);
+}
 .gw-soon {
   font-family: var(--font-heading);
   font-style: italic;
@@ -2081,8 +2105,6 @@ h1, h2, h3, h4 {
    blocks sit on it as a single frosted panel. The wash lifts the photo rather
    than darkening it, because the type is the page's usual dark ink. */
 .gw-exp {
-  /* Tight enough that the whole section clears a 720px laptop viewport. */
-  padding: 64px 0;
   text-align: center;
   background: linear-gradient(180deg, rgba(250,247,242,0.52), rgba(250,247,242,0.66)),
               url('../img/goa-sky.webp') center / cover no-repeat;
@@ -2178,13 +2200,161 @@ h1, h2, h3, h4 {
   .gw-fade.is-armed { opacity: 1; transform: none; transition: none; }
 }
 
+/* ---- Details, registration and accommodation ----
+   Two panels, because the two things on offer are booked through different
+   people: the course through aolt.in, the bed through Karthik. Keeping them
+   in separate panels is what stops the page reading as though one fee covers
+   both. All scoped to .gw-details — these class names exist only on this
+   page, but the scope keeps it that way. */
+/* ---- This page's band rhythm ----
+   56px rather than the site's 88px --section-y: six stacked bands at 88 put
+   176px of padding between every pair, which reads as empty rather than calm.
+   Scoped to this page's own sections, so index.html and spine-care.html keep
+   the site rhythm. */
+.gw-exp,
+.gw-details,
+.gw-close,
+.gw-faq,
+.gw-contact { padding-top: 44px; padding-bottom: 44px; }
+
+.gw-details { background: var(--sand-deep); }
+.gw-details .gw-head { margin-bottom: 22px; }
+.gw-details .gw-h2 { font-size: clamp(1.5rem, 2.4vw, 1.875rem); }
+.gw-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  max-width: 980px;
+  margin: 0 auto;
+  /* No align-items: start — the two panels hold different amounts of copy
+     (64px apart at every desktop width) and uneven cards read as an accident.
+     Stretch is the default; it is named here so nobody re-adds start. */
+  align-items: stretch;
+}
+.gw-panel {
+  display: flex;
+  flex-direction: column;
+  /* The panels stretch to a common height, so the shorter one has slack to
+     place. space-between spreads it thinly across every gap instead of
+     letting an auto margin pool it all above the button, which is what read
+     as a hole under the copy. */
+  justify-content: space-between;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 20px 24px 22px;
+}
+.gw-panel-tag {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--clay-deep);
+  margin-bottom: 7px;
+}
+.gw-panel-h {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+/* Schedule: label left, time right, on hairlines — the same way the Spine
+   Care details table reads. */
+.gw-sched { margin-bottom: 20px; border-top: 1px solid var(--line); }
+.gw-sched > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 18px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.gw-sched dt { font-size: var(--fs-base); color: var(--ink); }
+/* The course table's values are times, which must not break mid-span. The
+   accommodation table's are phrases, and nowrap there set a min-content floor
+   that pushed the whole card past a 320px viewport. Both selectors are
+   (0,2,0), so this one has to out-specify rather than rely on order. */
+.gw-sched.gw-stay dd { white-space: normal; }
+.gw-sched dd { font-size: var(--fs-base); color: var(--ink-soft); white-space: nowrap; }
+
+.gw-venue { font-size: var(--fs-base); line-height: 1.6; margin-bottom: 16px; }
+.gw-venue-label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+
+/* Both panels share one skeleton: tag, heading, figure, facts table, note,
+   CTA. The figure uses the heading face at --fs-xl with its qualifier in body
+   type, so the course contribution and the accommodation charge carry equal
+   weight and neither looks like the other's small print. */
+.gw-option-price {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.gw-option-price span {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+/* A fixed margin, not auto: an auto margin absorbs all the free space before
+   justify-content can distribute any of it, which puts the gap back. */
+.gw-panel-cta { margin-top: 14px; }
+/* .btn-outline's default edge is --line, which on a --paper card is about
+   1.2:1 — the control reads as text in a faint box and misses the 3:1 WCAG
+   asks of a boundary. Clay gives it a real edge at 5.8:1 and keeps it in the
+   primary's hue, so the two buttons read as a pair at different weights
+   rather than one looking unfinished. Scoped: .btn-outline elsewhere sits on
+   washes and photographs, not on white. */
+.gw-panel .btn-outline {
+  background: var(--paper);
+  border-color: var(--clay);
+  color: var(--clay);
+}
+.gw-panel .btn-outline:hover {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: var(--paper);
+}
+/* .btn-register goes full-bleed inside a stacked card below 768px, which is
+   right there and wrong here. */
+.gw-panel-cta .btn-register { width: auto; }
+
+/* ---- Get in Touch ----
+   The section is a copy of the homepage's, so it uses the homepage's rules
+   unchanged. The only difference here is the ground: this page's closing
+   band sits directly above it, and .contact's default paper left the two
+   with no separation. */
+.gw-contact { background: var(--sand-deep); }
+/* The contact links inherit the homepage's inline anchors, which render 17px
+   tall — under the 24px WCAG asks of a tap target, and fiddly on a phone.
+   Padding lifts them to 25px without moving anything else, since each row now
+   holds a single link. Scoped to this page: index.html's contact section is
+   the same markup and is deliberately left alone. */
+.gw-contact .contact-values a {
+  display: inline-block;
+  padding: 4px 0;
+}
+.gw-contact .contact-map-cta { display: inline-block; padding: 3px 0; }
+
 /* ---- Closing ----
    A different crop of the same frame: tight on the sun and the water, far
    wider than the hero band, so the two don't read as the same picture. */
 .gw-close {
   position: relative;
   overflow: hidden;
-  padding: var(--section-y) 0;
+  /* Padding comes from this page's band rhythm above, not --section-y: the
+     declaration here used to win on source order and left this one band at
+     88px while its neighbours were at 56. */
 }
 .gw-close::before {
   content: '';
@@ -2212,14 +2382,14 @@ h1, h2, h3, h4 {
 .gw-close-inner > * { color: var(--paper); }
 .gw-close-copy { font-size: var(--fs-md); color: rgba(255,255,255,0.88); margin-bottom: 36px; }
 .gw-close .gw-cta { justify-content: center; margin-bottom: 0; }
+/* The hero's CTA row is its last element, so this margin sat on top of the
+   hero's own bottom padding as dead space. */
+.gw-hero .gw-cta:last-child { margin-bottom: 0; }
 
 /* ---- FAQ ----
    <details>/<summary>, so it opens without a line of script and still works
    if JavaScript never arrives. */
 .gw-faq { background: var(--sand); }
-/* The global .section 120px leaves the FAQ floating away from the closing
-   band. 64px matches the experience section above it. */
-.gw-faq { padding-top: 64px; }
 .gw-faq .gw-head { margin-bottom: 32px; }
 /* A step below the experience heading rather than above it: this one labels a
    reference section, it is not the page making a statement. */
@@ -2284,7 +2454,11 @@ h1, h2, h3, h4 {
    broke onto two lines. */
 @media (max-width: 1000px) {
   :root { --section-y: 72px; }
-  .gw-exp { padding: 56px 0; }
+  .gw-exp,
+  .gw-details,
+  .gw-close,
+  .gw-faq,
+  .gw-contact { padding-top: 48px; padding-bottom: 48px; }
   .gw-exp-head { margin-bottom: 28px; }
   .gw-gains li { padding: 20px 22px; }
   .about-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -2333,9 +2507,18 @@ h1, h2, h3, h4 {
      the two photographic bands lose height so the page stays short. */
   .gw-hero {
     --gw-hero-image: url('../img/goa-getaway-portrait.webp');
-    min-height: min(84vh, 620px);
-    padding: 112px 0 64px;
+    min-height: 100vh;
+    min-height: 100svh;
+    /* 88px clears the 68px header here; the old 112/64 plus desktop margins
+       made the hero 757px on a 667px phone, so both CTAs sat below the
+       fold. */
+    padding: 88px 0 40px;
   }
+  .gw-hero .gw-eyebrow { margin-bottom: 10px; }
+  .gw-hero .gw-title { margin-bottom: 10px; }
+  .gw-hero .gw-where { margin-bottom: 12px; }
+  .gw-hero .gw-lede { margin-bottom: 12px; }
+  .gw-hero .gw-hours { margin-bottom: 18px; }
   .gw-hero::before {
     background-image:
       radial-gradient(ellipse 104% 78% at 46% 50%,
@@ -2350,14 +2533,20 @@ h1, h2, h3, h4 {
   }
   .gw-hero-inner > * { max-width: none; }
   .gw-head { margin-bottom: 36px; }
-  .gw-faq { padding-top: 48px; }
   .gw-faq .gw-head { margin-bottom: 24px; }
-  .gw-exp { padding: 48px 0; }
+  .gw-exp,
+  .gw-details,
+  .gw-close,
+  .gw-faq,
+  .gw-contact { padding-top: 40px; padding-bottom: 40px; }
   .gw-exp-head { margin-bottom: 24px; }
   .gw-exp .gw-h2 { margin-bottom: 10px; }
   .gw-rhythm { margin-bottom: 16px; }
   .gw-prop { font-size: var(--fs-md); }
   .gw-gains { grid-template-columns: 1fr; }
+  .gw-detail-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .gw-panel { padding: 22px 20px 24px; }
+  .gw-details .gw-head { margin-bottom: 26px; }
   .gw-gains li { padding: 18px 20px; }
   /* Single column, so every rule is a horizontal one between neighbours. */
   .gw-gains li:nth-child(odd) { border-right: 0; }
@@ -2508,5 +2697,11 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 480px) {
+  /* Small phones wrap every hero line, so the block grows faster than the
+     screen. A step down in the three largest sizes buys back ~30px without
+     the hero losing its scale. */
+  .gw-title { font-size: clamp(2rem, 9vw, 2.25rem); }
+  .gw-where { font-size: var(--fs-md); }
+  .gw-lede { font-size: var(--fs-lg); }
   .hero-buttons { flex-direction: column; align-items: stretch; }
 }
