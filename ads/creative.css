@@ -182,3 +182,187 @@ h1 { font-size: var(--fs-h1); }
 .story .dates li { padding: 44px 0; }
 /* Wider measure at the larger story type, or B's lead orphans its last word. */
 .story .lead { max-width: 860px; }
+
+/* ---- Concept D: Goa getaway, photo-led ----
+   A WhatsApp status, so the canvas is 1080x1920 and the copy is the getaway
+   page's hero, word for word. Centred rather than left-aligned: the lockup
+   sits centre-top and a status is read at arm's length in one glance, where
+   a centred column scans faster than a ragged edge.
+
+   Everything sits on a scrim because the frame is a sunset and its luminance
+   runs from near-black rock to bright sky: white type needs a floor under
+   it, not a hope. */
+.goa {
+  position: relative;
+  color: #fff;
+  text-align: center;
+  align-items: center;
+  background:
+    /* The scrim holds 0.62 until 60% and dips only across 60-70%, which is
+       the gap between the last line of copy and the CTA rule -- and where the
+       sun sits. An earlier, wider dip let the glow climb into the line above
+       it and took that line to 3.6:1; held flat to 60% it measures 5.9:1 and
+       the sun still gets to be the brightest thing in the frame. */
+    linear-gradient(180deg,
+      rgba(20, 12, 8, 0.80) 0%,
+      rgba(20, 12, 8, 0.62) 30%,
+      rgba(20, 12, 8, 0.62) 60%,
+      rgba(20, 12, 8, 0.34) 65%,
+      rgba(20, 12, 8, 0.62) 70%,
+      rgba(20, 12, 8, 0.90) 100%),
+    /* Zoomed into the lower band, not `cover`. The portrait crop and this
+       canvas are almost the same aspect, so `cover` showed the whole frame --
+       and that frame is ~70% empty sky, which put cloud behind the headline
+       and squeezed the sun and sea into a strip under the CTA. At 150% height
+       anchored to the bottom, the visible window is the lower two-thirds:
+       sun, horizon and water. Costs some sharpness, which a status post
+       loses to compression anyway. */
+    url('../img/goa-getaway-portrait.webp') center bottom / auto 150% no-repeat;
+}
+
+/* The three blocks are centred as one column rather than pushed apart with
+   space-between. The copy runs about 1200px tall inside a ~1530px safe box,
+   and space-between would pool the remaining 300px into two visible holes;
+   centring spends it as even air top and bottom. The padding is the status
+   safe area: WhatsApp's own chrome sits over the top ~150px and the reply
+   bar over the bottom ~200px, and nothing here may fall under either. */
+.story .goa {
+  justify-content: center;
+  gap: 74px;
+  padding: 176px var(--pad) 208px;
+}
+.goa > * { width: 100%; max-width: 900px; }
+
+.goa-top { display: flex; justify-content: center; }
+.logo-light {
+  /* The lockup's wordmark is #333 -- a dark grey, on a photograph under a
+     dark scrim. Measured plate-less against that background it runs 1.30:1
+     at the darkest point and 1.53:1 at the brightest -- invisible either way,
+     and the one thing never done to this mark is recolouring it. So it keeps
+     the plate the site's hero gives it, trimmed close so it reads as part of
+     the lockup rather than a box. */
+  box-sizing: content-box;
+  background: rgba(250, 247, 242, 0.94);
+  padding: 15px 24px;
+  border-radius: 14px;
+  align-self: center;
+}
+
+/* ---- the copy ---- */
+.goa-mid { display: flex; flex-direction: column; align-items: center; }
+.goa .eyebrow-light {
+  color: #fff;
+  opacity: 0.9;
+  margin-bottom: 22px;
+}
+.goa h1 {
+  color: #fff;
+  font-size: 104px;
+  line-height: 1.04;
+  text-wrap: balance;
+  margin-bottom: 24px;
+}
+.where {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 50px;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 30px;
+}
+/* The promise, in the page's own voice. Italic serif so it reads as a line
+   of writing rather than another label. */
+.lede {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 40px;
+  line-height: 1.32;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 32px;
+}
+/* What is actually in the weekend, and what it costs you in hours. Together
+   they answer the two questions a status has to survive: what is this, and
+   how much of my holiday does it take. */
+.strands {
+  font-size: 31px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 16px;
+}
+.hours { font-size: 30px; line-height: 1.45; color: rgba(255, 255, 255, 0.95); }
+
+/* ---- the call to action ---- */
+/* Ruled off from the copy: above the line is the invitation, below it is
+   what to do about it. */
+.goa-cta {
+  border-top: 1px solid rgba(255, 255, 255, 0.34);
+  padding-top: 54px;
+}
+.cta-label {
+  font-size: var(--fs-strip);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 12px;
+}
+/* Nothing in a status is clickable, so the registration link has to be
+   retyped off a phone screen. It is the largest thing after the title for
+   exactly that reason. */
+.cta-link {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 76px;
+  line-height: 1.08;
+  color: #fff;
+  margin-bottom: 30px;
+}
+/* The "tell me more" path, not the action -- so it is set smaller, but its
+   label and URL are stacked and spaced like the registration block above so
+   the pair reads as two offers rather than a link with a footnote. */
+.cta-more { margin-bottom: 26px; }
+.cta-more-label {
+  display: block;
+  font-size: var(--fs-strip);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 10px;
+}
+.cta-more {
+  font-size: 37px;
+  line-height: 1.25;
+  color: #fff;
+}
+/* Both ways of reaching a person, on one line with the number -- a status
+   viewer can tap neither, so the number has to be legible enough to dial. */
+.cta-note {
+  font-size: 33px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ---- 1080x1080 ---- */
+/* The square has 888px of height to the status canvas's ~1530, so the copy
+   has to come down with it or it simply will not fit. */
+.feed .goa {
+  gap: 30px;
+  background-size: auto, cover;
+  background-position: center, center bottom;
+}
+.feed .goa h1 { font-size: 68px; margin-bottom: 16px; }
+.feed .goa .eyebrow-light { margin-bottom: 14px; }
+/* The square is wide enough to hold all four strands on one line, so the
+   written-in break is dropped and the separator it stands in for comes back.
+   One or the other shows, never both. */
+.feed .strands br { display: none; }
+.story .strands .sep { display: none; }
+.feed .where { font-size: 34px; margin-bottom: 18px; }
+.feed .lede { font-size: 32px; margin-bottom: 18px; }
+.feed .strands, .feed .hours { font-size: 24px; }
+.feed .goa-cta { padding-top: 26px; }
+.feed .cta-link { font-size: 52px; margin-bottom: 20px; }
+.feed .cta-more { font-size: 26px; margin-bottom: 18px; }
+.feed .cta-note { font-size: 24px; }
+.feed .logo-light { padding: 10px 18px; }

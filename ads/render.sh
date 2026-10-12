@@ -7,11 +7,12 @@ set -e
 cd "$(dirname "$0")"
 mkdir -p out
 B="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+[ -x "$B" ] || B="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
-for f in a-hook b-relax c-dates; do
-  "$B" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=4000 \
+for f in a-hook b-relax c-dates d-goa; do
+  "$B" --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files --virtual-time-budget=4000 \
     --window-size=1080,1080 --screenshot="out/$f-feed.png"  "file://$PWD/$f.html?size=feed"  2>/dev/null
-  "$B" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=4000 \
+  "$B" --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files --virtual-time-budget=4000 \
     --window-size=1080,1920 --screenshot="out/$f-story.png" "file://$PWD/$f.html?size=story" 2>/dev/null
   echo "rendered $f"
 done
