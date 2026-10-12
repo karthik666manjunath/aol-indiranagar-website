@@ -618,12 +618,20 @@ h1, h2, h3, h4 {
   max-width: 30rem;
   margin: 0 0 22px;
 }
-.hc-goa-save { font-size: var(--fs-md); font-weight: 600; margin-bottom: 4px; }
-.hc-goa-soon {
+/* The promise, in the getaway page's own voice. Italic serif so it reads as
+   a line of writing rather than another label — it replaced "Save the dates",
+   which stopped being true once registration opened. */
+.hc-goa-lede {
   font-family: var(--font-heading);
   font-style: italic;
+  font-size: var(--fs-md);
+  margin-bottom: 6px;
+}
+/* What the weekend costs you in hours — the one practical thing worth saying
+   on a slide whose job is now to hand people on to the full page. */
+.hc-goa-hours {
   font-size: var(--fs-sm);
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.82);
   margin-bottom: 24px;
 }
 /* The same button as everywhere else — it carries its own colour, so it reads
