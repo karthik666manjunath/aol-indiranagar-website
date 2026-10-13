@@ -2287,6 +2287,12 @@ h1, h2, h3, h4 {
 .gw-sched.gw-stay dd { white-space: normal; }
 .gw-sched dd { font-size: var(--fs-base); color: var(--ink-soft); white-space: nowrap; }
 
+/* A merged row: no label, the value runs the full width. justify-content on
+   .gw-sched > div pushes a lone child to the left edge already, so this only
+   has to stop the value being treated as the right-hand column. */
+.gw-row-merged { justify-content: flex-start; }
+.gw-row-merged dd { flex: 1 1 100%; }
+
 .gw-venue { font-size: var(--fs-base); line-height: 1.6; margin-bottom: 16px; }
 .gw-venue-label {
   display: block;
@@ -2296,6 +2302,36 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
   color: var(--ink-faint);
   margin-bottom: 4px;
+}
+/* The name reads before the address, in the body face at full ink — an
+   address alone is harder to recognise on arrival than the place's name. */
+.gw-venue-name { display: block; font-weight: 600; color: var(--ink); }
+/* Its own line under the address, with the pin ahead of the words. The 8px
+   block padding is what carries the tap target past 24px (WCAG 2.5.8) on a
+   phone: the text alone is shorter than that. */
+.gw-map-link {
+  /* Block-level flex so it starts its own line instead of trailing the
+     postcode, but fit-content wide so the tap target is the link, not the
+     whole card. */
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 8px 0;
+  font-weight: 600;
+  color: var(--clay);
+  text-decoration: none;
+}
+.gw-map-link:hover,
+.gw-map-link:focus-visible { text-decoration: underline; }
+.gw-map-link .icon {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  flex: none;
 }
 
 /* Both panels share one skeleton: tag, heading, figure, facts table, note,
