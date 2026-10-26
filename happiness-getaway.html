@@ -167,33 +167,43 @@
         <div class="gw-detail-grid">
 
           <div class="gw-panel">
-            <p class="gw-panel-tag">The course</p>
+            <p class="gw-panel-tag">The course &middot; in English</p>
             <h3 class="gw-panel-h">Happiness Program (3 Days)</h3>
+            <!-- Both cards carry the badge in the same slot, under the
+                 heading. Beside the heading it sat a line higher and pushed
+                 that card's price and facts table out of step with the
+                 other's; the two read as a pair, so the slot has to match. -->
+            <p class="gw-stock gw-stock-block">Only 6 seats left</p>
             <!-- Same treatment as the accommodation price opposite, so the two
                  figures read as a pair and the course fee is not the quieter
                  of the two. "Contribution" is the word data.js uses for the
                  batch cards on the homepage. -->
             <p class="gw-option-price">&#8377;1,000 <span>contribution</span></p>
             <dl class="gw-sched">
+              <!-- One row per day, so this table has three rows against the
+                   three opposite and the two line up row for row. The month
+                   is abbreviated because spelled out, the Saturday and Sunday
+                   rows pushed their times onto a second line at 834-900px,
+                   where the cards sit side by side at their narrowest. -->
               <div>
-                <dt>Friday, 27 November</dt>
+                <dt>Friday, 27 Nov</dt>
                 <dd>4:00 &ndash; 7:00 PM</dd>
               </div>
               <div>
-                <dt>Saturday, 28 November</dt>
+                <dt>Saturday, 28 Nov</dt>
                 <dd>10:00 AM &ndash; 1:00 PM</dd>
               </div>
               <div>
-                <dt>Sunday, 29 November</dt>
+                <dt>Sunday, 29 Nov</dt>
                 <dd>10:00 AM &ndash; 1:00 PM</dd>
-              </div>
-              <div>
-                <dt>Language</dt>
-                <dd>English</dd>
               </div>
             </dl>
             <p class="gw-venue">
-              <span class="gw-venue-label">Venue</span>
+              <!-- The label is for screen readers only. On screen the bold
+                   venue name is heading enough after the schedule table, and
+                   the line it occupied was pure height in a card that is
+                   taller than the one beside it. -->
+              <span class="gw-venue-label sr-only">Venue</span>
               <span class="gw-venue-name">Gurukul Veda Life &ndash; Goa</span>
               House No. 37, Patnem, Canacona,<br>South Goa, Goa &ndash; 403702
               <!-- A link, not an embedded map: an iframe would pull Google's
@@ -212,15 +222,18 @@
             </p>
           </div>
 
-          <div class="gw-panel">
+          <div class="gw-panel gw-panel-stay">
             <p class="gw-panel-tag">Optional, and charged separately</p>
             <h3 class="gw-panel-h">Stay at the venue</h3>
+            <!-- Sentence case in the markup, uppercased in CSS, so a screen
+                 reader says the words instead of spelling them out — the
+                 same way .gw-panel-tag is written. -->
+            <p class="gw-stock gw-stock-block">Only 2 beds left</p>
             <!-- Same skeleton as the course panel opposite — tag, heading,
-                 figure, facts table, note, CTA — so the two read as a pair.
-                 The qualifier on the figure and the "Course fee / Not
-                 included" row both exist because "course + accommodation"
-                 above a single price invites the reading that one number
-                 covers both. It does not. -->
+                 badge, figure, facts table, note, CTA — so the two read as a
+                 pair. "accommodation only" qualifies the figure because
+                 "course + accommodation" above a single price invites the
+                 reading that one number covers both. It does not. -->
             <p class="gw-option-price">&#8377;6,000 <span>per person, accommodation only</span></p>
             <dl class="gw-sched gw-stay">
               <div>

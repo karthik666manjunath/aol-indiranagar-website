@@ -2243,10 +2243,13 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   /* The panels stretch to a common height, so the shorter one has slack to
-     place. space-between spreads it thinly across every gap instead of
-     letting an auto margin pool it all above the button, which is what read
-     as a hole under the copy. */
-  justify-content: space-between;
+     place. It is placed once, deliberately, rather than spread: space-between
+     inflated every gap in the accommodation card to 38-61px against the
+     course card's natural 6-30px, so the two stopped reading as a pair and
+     the card looked padded out. Packing from the top keeps both cards on the
+     same rhythm -- the prices and the facts tables line up across the pair --
+     and .gw-panel-stay below decides where the leftover height goes. */
+  justify-content: flex-start;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
@@ -2266,6 +2269,51 @@ h1, h2, h3, h4 {
   font-weight: 500;
   color: var(--ink);
   margin-bottom: 12px;
+}
+/* The accommodation card is the shorter of the pair -- it has no schedule,
+   no address and no map link -- so it carries all the leftover height. Auto
+   margin here collects it into one break above "Or stay elsewhere", where
+   the facts table's closing hairline already marks a section, and pins the
+   note and its button to the bottom so both cards' buttons sit on one line.
+   One considered gap instead of five accidental ones. */
+.gw-panel-stay > .gw-venue { margin-top: auto; }
+
+/* Scarcity, stated once and quietly. The words carry it at 6.78:1 on
+   --clay-tint; the tint itself is only 1.17:1 against the card, which is the
+   point -- it separates the badge from the heading beside it without turning
+   into a sticker. No new colour: --clay-tint and --clay-deep are already the
+   page's accent pair. The dot is the one signal that this is a live count
+   rather than another label. */
+.gw-stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--clay-tint);
+  color: var(--clay-deep);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* The same badge where it has to stack instead of sit inline. As a direct
+   child of the column-flex panel it would otherwise blockify and stretch the
+   full card width, which would turn a badge into a banner. */
+.gw-stock-block {
+  align-self: flex-start;
+  margin-top: -2px;
+  margin-bottom: 14px;
+}
+.gw-stock::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--clay);
+  flex: none;
 }
 
 /* Schedule: label left, time right, on hairlines — the same way the Spine
@@ -2306,19 +2354,21 @@ h1, h2, h3, h4 {
 /* The name reads before the address, in the body face at full ink — an
    address alone is harder to recognise on arrival than the place's name. */
 .gw-venue-name { display: block; font-weight: 600; color: var(--ink); }
-/* Its own line under the address, with the pin ahead of the words. The 8px
-   block padding is what carries the tap target past 24px (WCAG 2.5.8) on a
-   phone: the text alone is shorter than that. */
+/* Its own line under the address, with the pin ahead of the words. Block-level
+   flex so it starts that line instead of trailing the postcode, but fit-content
+   wide so the tap target is the link rather than the whole card.
+
+   It used to carry 8px of block padding to clear the 24px tap target of WCAG
+   2.5.8. Measured, the icon and line-height already give it 26px, so the
+   padding was 16px of height this card could not spare -- min-height now
+   states the floor outright rather than arriving at it by accident. */
 .gw-map-link {
-  /* Block-level flex so it starts its own line instead of trailing the
-     postcode, but fit-content wide so the tap target is the link, not the
-     whole card. */
   display: flex;
   width: fit-content;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
-  padding: 8px 0;
+  margin-top: 4px;
+  min-height: 26px;
   font-weight: 600;
   color: var(--clay);
   text-decoration: none;
